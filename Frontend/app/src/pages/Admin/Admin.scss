@@ -1,0 +1,25 @@
+.adminpage{
+    .content{
+        width: 100%;
+        .modal-buttons{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            width: 100%;
+            gap: 10px;
+            .big-button{
+                padding: 40px;
+                box-sizing: border-box;
+                flex-basis: 200px;
+                flex-grow: 1;
+                background-color: var(--primary-color);
+                cursor: pointer;
+                white-space: nowrap;
+                text-align: center;
+                font-weight: bold;
+                border-radius: 20px;
+                border: 1px solid var(--border-color);
+            }
+        }
+    }
+}

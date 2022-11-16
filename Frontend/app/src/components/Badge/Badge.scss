@@ -1,0 +1,77 @@
+.badge{
+    display: flex;
+    flex-direction: column;
+    // height: 50px;
+    // border:1px solid var(--border-color);
+    align-items: center;
+    width: 60px;
+    .badge-img{
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        img{
+            object-fit: cover;
+            max-width: 100%;
+            max-height: 100%;
+            -webkit-filter: grayscale(100%);
+            filter: grayscale(100%);
+            transition: filter 0.3s ease-in-out;
+        }
+        img:hover{
+            -webkit-filter: grayscale(0);
+            filter: grayscale(0);
+        }
+    }
+    .badge-name{
+        // width: fit-content;
+        color: var(--text-disabled-color);
+    }
+    .badge-progress-wrapper{
+        // text-align: center;
+        position: relative;
+        height: 20px;
+        width: 100%;
+        // background-color: red;
+        // z-index: 10;
+        border-radius: 10px;
+        overflow: hidden;
+        box-sizing: border-box;
+        border: 2px solid var(--border-color);
+        background-color: var(--border-color);
+        .badge-progress-counter{
+            line-height: 18px;
+            font-size: 12px;
+            text-align: center;
+            font-weight: bold;
+            z-index: 15;
+            position: absolute;
+            width: 100%;
+            color: var(--font-color);
+        }
+        .badge-progress-inner{
+            background-color: var(--progress-color);
+            position: absolute;
+            height: 100%;
+            left: 0;
+            top: 0;
+            z-index: 10;
+            border-radius: 10px;
+        }
+    }
+}
+
+.badge.earned{
+    .badge-name{
+        color: var(--font-color);
+    }
+
+    .badge-img{
+        img{
+            -webkit-filter: grayscale(0); /* Safari 6.0 - 9.0 */
+            filter: grayscale(0);
+        }
+    }
+}

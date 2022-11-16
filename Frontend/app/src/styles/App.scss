@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&display=swap');
+
+:root {
+    --primary-color: #fff;
+    --secondary-color: orange;
+    --secondary-color-font-color:#424242;
+    --font-color: #424242;
+    --grey-font-color:#ccc;
+    --bg-color: #F9F9F9;
+    --heading-color: #292922;
+    --selected-color: #B6D1FA;
+    --button-color: #F4F5FF;
+    --button-hover-color: #d5d6df;
+    --border-color: #dedede;
+    --link-color: #2D4CF0;
+    --progress-color: rgb(0, 209, 0);
+    --text-disabled-color:#ccc;
+}
+  
+[data-theme="dark"] {
+    --primary-color: #505050;
+    --secondary-color: orange;
+    --secondary-color-font-color:#424242;
+    --font-color: rgb(239, 239, 239);
+    --bg-color: #2d2d2d;
+    --heading-color: white;
+    --button-color: #424246;
+    --button-hover-color: rgb(48, 45, 45);
+    --border-color:#7b7b7b;
+    --link-color: #2D4CF0;
+    --selected-color: #7a818c;
+    --progress-color: green;
+    --text-disabled-color:#ccc;
+}
+
+html{
+    height: 100%;
+}
+body {
+    font-family: 'Nunito', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100%;
+    margin: 0;
+    background-color: var(--bg-color);
+    display: flex;
+}
+
+#root{
+    display: flex;
+    min-height: 100%;
+    width: 100%;
+}
+
+.seperator{
+    width: calc(100% - 20px);
+    height: 2px;
+    background-color: var(--button-color);
+    transition: width 0.5s ease-in-out;
+}
+
+
+.btn{
+    background-color: var(--button-color);
+    text-align: center;
+    width: fit-content;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.btn:hover{
+  // transition: background-color 0.2s ease-in-out;
+  // transition: color 0.1s ease-in-out;
+  color: var(--secondary-color-font-color);
+  background-color: var(--secondary-color);
+}
+
+.btn.btn-rounded{
+    border-radius: 20px;
+}
+
+
+/* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) var(--bg-color);
+  }
+
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: var(--bg-color);
+    border-radius: 10px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #505050;
+    border-radius: 10px;
+    border: 3px solid var(--bg-color);
+  }

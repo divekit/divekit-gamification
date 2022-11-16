@@ -1,0 +1,166 @@
+{
+    "users":[
+        {
+            "id":1,
+            "username":"Kartoffel",
+            "isAdmin":false,
+            "profileImg":"profile5.png",
+            "badges":[
+                {
+                    "id":1,
+                    "name":"Hurra!",
+                    "description":"Du hast alle Aufgaben von Meilenstein 1 erfolgreich abgeschlossen!",
+                    "date":"2022-11-13T15:43:00",
+                    "img":"badge1.png",
+                    "earned":true,
+                    "total":5,
+                    "current":5
+                },
+                {
+                    "id":1,
+                    "name":"Hurra!",
+                    "description":"Du hast alle Aufgaben von Meilenstein 1 erfolgreich abgeschlossen!",
+                    "date":"2022-11-13T15:43:00",
+                    "img":"badge1.png",
+                    "earned":true,
+                    "total":5,
+                    "current":5
+                },
+                {
+                    "id":1,
+                    "name":"Hurra!",
+                    "description":"Du hast alle Aufgaben von Meilenstein 1 erfolgreich abgeschlossen!",
+                    "date":"2022-11-13T15:43:00",
+                    "img":"badge1.png",
+                    "earned":true,
+                    "total":5,
+                    "current":5
+                },
+                {
+                    "id":1,
+                    "name":"Hurra!",
+                    "description":"Du hast alle Aufgaben von Meilenstein 1 erfolgreich abgeschlossen!",
+                    "date":"2022-11-13T15:43:00",
+                    "img":"badge1.png",
+                    "earned":true,
+                    "total":5,
+                    "current":5
+                },
+                {
+                    "id":1,
+                    "name":"Hurra!",
+                    "description":"Du hast alle Aufgaben von Meilenstein 1 erfolgreich abgeschlossen!",
+                    "date":"2022-11-13T15:43:00",
+                    "img":"badge1.png",
+                    "earned":true,
+                    "total":5,
+                    "current":5
+                },
+                {
+                    "id":1,
+                    "name":"Hurra!",
+                    "description":"Du hast alle Aufgaben von Meilenstein 1 erfolgreich abgeschlossen!",
+                    "date":"2022-11-13T15:43:00",
+                    "img":"badge1.png",
+                    "earned":true,
+                    "total":5,
+                    "current":5
+                },
+                {
+                    "id":1,
+                    "name":"Hurra!",
+                    "description":"Du hast alle Aufgaben von Meilenstein 1 erfolgreich abgeschlossen!",
+                    "date":"2022-11-13T15:43:00",
+                    "img":"badge1.png",
+                    "earned":true,
+                    "total":5,
+                    "current":5
+                },
+                {
+                    "id":1,
+                    "name":"Hurra!",
+                    "description":"Du hast alle Aufgaben von Meilenstein 1 erfolgreich abgeschlossen!",
+                    "date":"2022-11-13T15:43:00",
+                    "img":"badge1.png",
+                    "earned":true,
+                    "total":5,
+                    "current":5
+                },
+                {
+                    "id":2,
+                    "name":"Yoink!",
+                    "description":"Du hast alle Aufgaben von Meilenstein 1 erfolgreich abgeschlossen!",
+                    "date":"2022-11-13T15:43:00",
+                    "img":"badge2.png",
+                    "earned":false,
+                    "total":5,
+                    "current":0
+                },
+                {
+                    "id":3,
+                    "name":"Drei Yeeey!",
+                    "description":"Du hast alle Aufgaben von Meilenstein 1 erfolgreich abgeschlossen!",
+                    "date":"2022-11-13T15:43:00",
+                    "img":"badge2.png",
+                    "earned":false
+                },
+                {
+                    "id":4,
+                    "name":"Vier!",
+                    "description":"Du hast alle Aufgaben von Meilenstein 1 erfolgreich abgeschlossen!",
+                    "date":"2022-11-13T15:43:00",
+                    "img":"badge2.png",
+                    "earned":false,
+                    "total":3,
+                    "current":1
+                }
+            ]
+        },
+        {
+            "id":5,
+            "username":"Arench", 
+            "isAdmin":true,
+            "profileImg":"profile5.png",
+            "badges":[
+                {
+                    "id":1,
+                    "name":"Hurra!",
+                    "description":"Du hast alle Aufgaben von Meilenstein 1 erfolgreich abgeschlossen!",
+                    "date":"2022-11-13T15:43:00",
+                    "img":"badge1.png",
+                    "earned":false,
+                    "total":5,
+                    "current":4
+                },
+                {
+                    "id":2,
+                    "name":"Yoink!",
+                    "description":"Du hast alle Aufgaben von Meilenstein 1 erfolgreich abgeschlossen!",
+                    "date":"2022-11-13T15:43:00",
+                    "img":"badge2.png",
+                    "earned":true,
+                    "total":5,
+                    "current":5
+                },
+                {
+                    "id":3,
+                    "name":"Drei Yeeey!",
+                    "description":"Du hast alle Aufgaben von Meilenstein 1 erfolgreich abgeschlossen!",
+                    "date":"2022-11-13T15:43:00",
+                    "img":"badge2.png",
+                    "earned":false
+                },
+                {
+                    "id":4,
+                    "name":"Vier!",
+                    "description":"Du hast alle Aufgaben von Meilenstein 1 erfolgreich abgeschlossen!",
+                    "date":"2022-11-13T15:43:00",
+                    "img":"badge2.png",
+                    "earned":false,
+                    "total":3,
+                    "current":1
+                }
+            ]
+        }
+    ]
+}

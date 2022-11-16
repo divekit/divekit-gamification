@@ -1,0 +1,106 @@
+.card{
+    background-color: var(--primary-color);
+    padding: 0 20px 0 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    height: fit-content;
+    // height: auto;
+    // max-height:150px;
+    display: flex;
+    flex-direction: column;
+    transition: height 0.3s ease-in-out;
+    overflow: hidden;
+    .card-top{
+        height: 50px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        .card-title-wrapper{
+            
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+            // flex: 1 1 auto;
+            // width: calc(100% - 20px);
+            margin-right: 10px;
+            overflow: hidden;
+            .card-title{
+                display: flex;
+                align-items: center;
+                font-size: 24px;
+                white-space: nowrap;
+                // width: 100%;
+                // margin-right: auto;
+                // width: 100%;
+
+                // max-width: calc(100% - 100px);
+                
+                line-height: 42px;
+                
+            }
+            .card-count{
+                display: flex;
+                align-items: center;
+                color: var(--grey-font-color);
+            }
+        }
+        .card-collapse-button{
+            font-size: 24px;
+            line-height: 32px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            
+            .extend-icon{
+                background-color: var(--button-color);
+                padding: 5px;
+                border-radius: 20px;
+                color: var(--font-color);
+            }
+            .extend-icon:hover{
+                background-color: var(--secondary-color);
+                color:var(--secondary-color-font-color)
+            }
+            .collapse-icon{
+                background-color: var(--button-color);
+                padding: 5px;
+                border-radius: 20px;
+                color: var(--font-color);
+            }
+            .collapse-icon:hover{
+                background-color: var(--secondary-color);
+                color:var(--secondary-color-font-color)
+            }
+        }
+        
+    }
+    .card-seperator{
+        transition: height 0.3s ease-in-out;
+        width: 100%;
+    }
+    .card-content{
+        transition: height 0.3s ease-in-out;
+        padding-top: 10px;
+        overflow: hidden;
+        padding-bottom: 10px;
+    }
+
+}
+.card.collapsed{
+    // transition: height 1s ease-in-out;
+    height: 52px;
+    overflow: hidden;
+    max-height:100px;
+    .card-content{
+        // height: 0;
+        // font-size: 0;
+        display: none;
+        
+    }
+    .card-seperator{
+        // height: 0;
+        display: none;
+    }
+    
+}

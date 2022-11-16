@@ -1,0 +1,106 @@
+.communitypage{
+    .content{
+        .community-card{
+            // overflow: hidden;
+            // overflow-x: scroll;
+            .table-wrapper{
+                overflow-x: auto;
+                width: 100%;
+                table{
+                    // background-color: var(--primary-color);
+                    border-spacing: 0; /* cellspacing */
+                    border-radius: 20px;
+                    border: 1px solid var(--border-color);
+                    overflow: hidden;
+                    // width: fit-content;
+                    width: 100%;
+                    padding: 10px;
+                    overflow-x: auto;
+                    // display: block;
+                    thead{
+                        
+                        // border-collapse:separate;
+                        tr{
+                            
+                            // padding: 10px;
+                            th{
+                                padding: 0 10px 10px 10px;
+                                border-bottom: 3px solid var(--border-color);                            
+                                text-align: start;
+                            }
+                        border-radius: 20px;
+                        
+                        }
+                    }
+                    tbody{
+                        width: 100%;
+                        tr{
+                            width: 100%;
+                            td{
+                                padding: 10px;
+                                border-bottom: 1px solid var(--border-color);  
+                            }
+                            td.user-badges{
+                                // background-color: red;
+                                // height: ;
+                                // height: fit-content;
+                                // height: 100%;
+                                // box-sizing: border-box;
+                                // width: 100%;
+                                display: block;
+                                overflow: hidden;
+                                .small-badges{
+                                    display: block;
+                                    
+                                    // box-sizing: content-box;
+                                    // background-color: green;
+                                    // width: 100%;
+                                    display: flex;
+                                    flex-direction: row;
+                                    // justify-content: flex-start;
+                                    // width: fit-content;
+                                    // height: 100%;
+                                    gap: -5px;
+                                    // padding: 5px 0;
+                                    padding-right: 20px;
+    
+                                    .badge-small{
+                                        margin-right: -10px;
+                                    }
+                                    .badge-small:hover{
+                                        margin-right:0px;
+                                    }
+                                    .badge-small:last-child:hover{
+                                        margin-right: -10px;
+                                    }
+                                }
+                            }
+                        }
+                        tr:hover{
+                            background-color: var(--border-color);
+                        }
+                        tr:last-child{
+                            td{
+                                border-bottom: none;
+                            }
+                        }
+                    }
+                    tfoot{
+                        tr{
+                            
+                            // padding: 10px;
+                            th{
+                                padding: 10px 10px 0 10px;
+                                border-top: 3px solid var(--border-color);                            
+                                text-align: start;
+                            }
+                        border-radius: 20px;
+                        
+                        }
+                    }
+                    
+                }
+            }
+        }
+    }
+}
