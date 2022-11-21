@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useState,useContext } from 'react'
 
 import Sidebar from '../../components/Sidebar/Sidebar';
 
@@ -7,11 +7,81 @@ import "./Home.scss"
 import dummy from "./dummy.json";
 import Card from '../../components/Card/Card';
 import Badge from '../../components/Badge/Badge';
+import axiosInstance from '../../axios';
+import AuthContext from '../../context/AuthContext';
 function Home() {
 
+  const { user, setUser } = useContext(AuthContext)
+  const [totalBadges,setTotalBadges] = useState(null)
+  const [myProfile,setMyProfile] = useState(null)
+  const [earnedBadges,setEarnedBadges] = useState(null)
+  const [progressedBadges, setProgressedBadges] = useState(null)
+  const [availableBadges,setAvailableBadges] = useState(null)
+  const [miscBadges,setMiscBadges] = useState(null)
+
   useEffect(()=>{
-    console.log(dummy)
-  },[])
+    if(user){
+      axiosInstance.get("/api/v1/badges/").then(response=>{
+        setTotalBadges(response.data)
+      })
+      axiosInstance.get("/api/v1/users/"+user.user_id).then(response=>{
+        setMyProfile(response.data)
+      })
+    }
+
+  },[user])
+
+  useEffect(()=>{
+    if(myProfile && totalBadges){
+
+      console.log(myProfile)
+      console.log(totalBadges)
+
+      let progressedBadgesTmp = myProfile.badges.filter(progressBadge=>{
+        return progressBadge.earned===false;
+      })
+      setProgressedBadges(progressedBadgesTmp)
+      
+      let earnedBadgesTmp = myProfile.badges.filter(progressBadge=>{
+        return progressBadge.earned===true;
+      })
+      setEarnedBadges(earnedBadgesTmp)
+      
+      setAvailableBadges(totalBadges.filter(badge=>{
+        if(badge.is_unique){
+          let found = false;
+          progressedBadgesTmp.forEach(element => {
+            if(element.badge.id === badge.id){
+              found = true;
+            }
+          });
+          if(found){
+            return false;
+          }
+          earnedBadgesTmp.forEach(element=>{
+            if(element.badge.id === badge.id){
+              found = true;
+            }
+          });
+          if(found){
+            return false;
+          }
+          return true
+        }
+        return false
+      }))
+
+      setMiscBadges(totalBadges.filter(badge=>{
+        return badge.is_unique===false;
+      }))
+
+    }
+  },[myProfile,totalBadges])
+
+
+  useEffect(()=>{
+    console.log("M",availableBadges)
+  },[availableBadges])
   return (<>
   <div className='homepage def-page'>
         <Sidebar></Sidebar>
@@ -21,62 +91,82 @@ function Home() {
           </div>
           <div className='cards'>
             
-            <Card collapsed={false} title={"Erworben"} count={4}>
+            <Card collapsed={false} title={"Erworben"} count={earnedBadges?earnedBadges.length:"0"}>
+            {earnedBadges?
+              
               <div className='badges'>
-                <Badge name="Hurra!" 
-                total={5} 
-                current={5}
-                description="Du hast alle Aufgaben von Meilenstein 1 erfolgreich bestanden."
-                earned={true}
-                // badgeImg="https://www.w3schools.com/images/img_mylearning_120.png"
-                badgeImg="https://www.gravatar.com/avatar/7e721e8fb7dc69b5068dc98f2daf74bc?s=64&d=identicon&r=PG&f=1"
-                ></Badge>
-                <Badge name="Hurra!" 
-                // total={5} 
-                earned={true}
-                // current={3} 
-                // badgeImg="https://www.w3schools.com/images/img_mylearning_120.png"
-                badgeImg="https://www.gravatar.com/avatar/7e721e8fb7dc69b5068dc98f2daf74bc?s=64&d=identicon&r=PG&f=1"
-                ></Badge>
-                
+                {earnedBadges.map((badge,index)=>{
+                  
+                  return <Badge 
+                          description={badge.badge.description} 
+                          key={index} 
+                          name={badge.badge.name}
+                          total={badge.badge.milestones} 
+                          current={badge.progress} 
+                          badgeImg={axiosInstance.defaults.baseURL + badge.badge.img}
+                          ></Badge>
+                })}
               </div>
+              :"Kein Badge gefunden"}
               
             </Card>
-            <Card collapsed={false} title={"Gesperrt"} count={32}>
+            <Card collapsed={false} title={"Vorangegangen"} count={progressedBadges?progressedBadges.length:"0"}>
+              {progressedBadges?
               <div className='badges'>
-              <Badge name="Hurra!" 
-                // total={5} 
-                // current={3} 
-                // badgeImg="https://www.w3schools.com/images/img_mylearning_120.png"
-                badgeImg="https://www.gravatar.com/avatar/7e721e8fb7dc69b5068dc98f2daf74bc?s=64&d=identicon&r=PG&f=1"
-                ></Badge>
-                <Badge name="Hurra!" 
-                total={5} 
-                current={3} 
-                // badgeImg="https://www.w3schools.com/images/img_mylearning_120.png"
-                badgeImg="https://www.gravatar.com/avatar/7e721e8fb7dc69b5068dc98f2daf74bc?s=64&d=identicon&r=PG&f=1"
-                ></Badge>
-                <Badge name="Hurra!" 
-                total={5} 
-                current={3} 
-                // badgeImg="https://www.w3schools.com/images/img_mylearning_120.png"
-                badgeImg="https://www.gravatar.com/avatar/7e721e8fb7dc69b5068dc98f2daf74bc?s=64&d=identicon&r=PG&f=1"
-                ></Badge>
-                <Badge name="Hurra!" 
-                total={5} 
-                current={3} 
-                // badgeImg="https://www.w3schools.com/images/img_mylearning_120.png"
-                badgeImg="https://www.gravatar.com/avatar/7e721e8fb7dc69b5068dc98f2daf74bc?s=64&d=identicon&r=PG&f=1"
-                ></Badge>
-                <Badge name="Hurra!" 
-                total={5} 
-                current={3} 
-                // badgeImg="https://www.w3schools.com/images/img_mylearning_120.png"
-                badgeImg="https://www.gravatar.com/avatar/7e721e8fb7dc69b5068dc98f2daf74bc?s=64&d=identicon&r=PG&f=1"
-                ></Badge>
+
+                {progressedBadges.map((badge,index)=>{
+                  
+                  return <Badge 
+                          description={badge.badge.description} 
+                          key={index} 
+                          name={badge.badge.name}
+                          total={badge.badge.milestones} 
+                          current={badge.progress} 
+                          badgeImg={axiosInstance.defaults.baseURL + badge.badge.img}
+                          ></Badge>
+                })}
               </div>
+              :"Kein Badge gefunden"}
+              
             </Card>
-            <Card collapsed={true} title={"Misc"} count={144}></Card>
+            <Card collapsed={false} title={"Erhältlich"} count={availableBadges?availableBadges.length:"0"}>
+            {availableBadges?
+              // console.log("")
+              <div className='badges'>
+
+                {availableBadges.map((badge,index)=>{
+                  
+                  return <Badge 
+                          description={badge.description} 
+                          key={index} 
+                          name={badge.name}
+                          total={badge.milestones} 
+                          current={0} 
+                          badgeImg={axiosInstance.defaults.baseURL + badge.img}
+                          ></Badge>
+                })}
+              </div>
+              :"Kein Badge gefunden"}
+            </Card>
+            <Card collapsed={false} title={"Misc"} count={miscBadges?miscBadges.length:"0"}>
+            {miscBadges?
+              // console.log("")
+              <div className='badges'>
+
+                {miscBadges.map((badge,index)=>{
+                  
+                  return <Badge 
+                          description={badge.description}
+                          key={index} 
+                          name={badge.name}
+                          // total={badge.milestones} 
+                          // current={0} 
+                          badgeImg={axiosInstance.defaults.baseURL + badge.img}
+                          ></Badge>
+                })}
+              </div>
+              :"Kein Badge gefunden"}
+            </Card>
           </div>
         </div>
     </div>

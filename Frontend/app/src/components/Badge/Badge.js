@@ -6,7 +6,7 @@ function Badge({name,description,total,current,badgeImg,earned}) {
         <div className='badge-img'><img src={badgeImg} alt={name + " Bild"}></img></div>
         <div className='badge-name'>{name}</div>
         <div className='badge-progress-wrapper'>
-            <div className='badge-progress-counter'>{total?(current+"/"+total):earned?"1/1":"0/1"}</div>
+            <div className='badge-progress-counter'>{total?(current+"/"+total):"99+"}</div>
             {
             total?
                 <div className='badge-progress-inner' style={{width:(100*current/total)+"%"}}></div>

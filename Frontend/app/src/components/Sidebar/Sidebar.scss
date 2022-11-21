@@ -147,7 +147,33 @@
                 width: 60px;
                 background: rgb(255,230,172);
                 background: linear-gradient(146deg, rgba(255,230,172,1) 0%, rgba(255,179,0,1) 32%, rgba(255,144,0,1) 51%);
+                // background: red;
                 font-size: 36px;
+                overflow: hidden;
+                position: relative;
+                border: 2px solid var(--border-color);
+                .profile-letter{
+                    position: absolute;
+                    z-index: 10;
+                    color: var(--font-color);
+                    text-shadow: -1px -1px 0 var(--border-color), 1px -1px 0 var(--border-color), -1px 1px 0 var(--border-color), 1px 1px 0 var(--border-color);
+                    -webkit-font-smoothing: antialiased
+                }
+                .profile-img{
+                    // z-index: -5;
+                    position: absolute;
+                    object-fit: contain;
+                    max-width: none;
+                    max-height: 100%;
+                    width: auto;
+                    height: auto;
+                }
+                .profile-img.higher-width{
+                    max-height: none;
+                    max-width: 100%;
+                    width: auto;
+                    height: auto;
+                }
                 
             }
             .profile-name{

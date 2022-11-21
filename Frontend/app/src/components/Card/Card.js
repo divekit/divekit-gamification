@@ -3,14 +3,14 @@ import React, { useState } from 'react'
 import "./Card.scss"
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
-function Card({children,collapsed,title,count,noOverlay,notCollapsable,className}) {
+function Card({children,collapsed,title,count,noOverlay,notCollapsable,className,description}) {
 
   const [cardCollapsed,setCardCollapsed] = useState(collapsed)
 
 
 
   return (
-    <div className={cardCollapsed?`card collapsed ${className}`:`card ${className}`}>
+    <div title={description} className={cardCollapsed?`card collapsed ${className}`:`card ${className}`}>
             {noOverlay?<></>:<><div className='card-top'>
               <div className='card-title-wrapper'>
               <div className='card-title'>{title}</div>
