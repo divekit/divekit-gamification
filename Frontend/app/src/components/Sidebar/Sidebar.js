@@ -10,7 +10,7 @@ import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import ViewHeadlineRoundedIcon from '@mui/icons-material/ViewHeadlineRounded';
 import ThemeContext from '../../context/ThemeContext';
-import profileJson from "./profile.json";
+
 import "./Sidebar.scss"
 function Sidebar() {
     const { user, setUser } = useContext(AuthContext)
@@ -23,7 +23,7 @@ function Sidebar() {
     useEffect(()=>{
         console.log(user)
         let img = new Image();
-        img.src = "http://127.0.0.1:8000/"+user.img;
+        img.src = axiosInstance.defaults.baseURL+user.img;
         img.onload = () => {
             // console.log(img.height);
             // console.log(img.width);
@@ -70,7 +70,7 @@ function Sidebar() {
                                     <SettingsRoundedIcon></SettingsRoundedIcon><div className='label'>Einstellungen</div>
                                 </NavLink>
                             </li>
-                            {profileJson.isAdmin?<li>
+                            {user.is_staff?<li>
                                 <NavLink to="/admin" className={({ isActive }) => isActive ? "selected" : undefined}>
                                 <AdminPanelSettingsRoundedIcon></AdminPanelSettingsRoundedIcon><div className='label'>Moderation</div>
                                 </NavLink>
@@ -85,7 +85,7 @@ function Sidebar() {
                 <div className='sidebar-bottom'>
                     <div className='seperator'></div>
                     <div className='profile'>
-                        <div onClick={()=>{navigate("/profile/"+user.user_id)}} className='profile-button'><div className="profile-letter">{user.username.charAt(0).toUpperCase()}</div><img className={profileImageHigherWidth?'profile-img higher-width':'profile-img'} alt="Profil Bild" src={"http://127.0.0.1:8000/"+user.img}/></div>
+                        <div onClick={()=>{navigate("/profile/"+user.user_id)}} className='profile-button'><div className="profile-letter">{user.username.charAt(0).toUpperCase()}</div><img className={profileImageHigherWidth?'profile-img higher-width':'profile-img'} alt="Profil Bild" src={axiosInstance.defaults.baseURL+user.img}/></div>
                         {/* <div onClick={()=>{navigate("/profile/"+user.user_id)}} className='profile-button'><div className="profile-letter">{user.username.charAt(0).toUpperCase()}</div><img className='profile-img' src={"https://images.pexels.com/photos/5800782/pexels-photo-5800782.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"}/></div> */}
                         <div onClick={()=>{navigate("/profile/"+user.user_id)}} className='profile-name'>{user.username.charAt(0).toUpperCase() + user.username.slice(1)}</div>
                     </div>
