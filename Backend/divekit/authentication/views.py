@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 # from .permissions import IsAdmin, IsAdminOrReadOnly, IsAdminOrSelf
 from .models import User
-from .serializers import ChangePasswordSerializer, MyTokenObtainPairSerializer, UserSerializer
+from .serializers import ChangePasswordSerializer, MyTokenObtainPairSerializer, UserSerializer,UserSerializerMinified
 from rest_framework import serializers
 
 
@@ -18,7 +18,14 @@ class UserListView(APIView):
         users = User.objects.all()
         serializer = UserSerializer(users,many=True)
         return Response(serializer.data, status.HTTP_200_OK)
-        
+
+
+class UserListViewMinified(APIView):
+    def get(self,request,*args,**kwargs):
+        users = User.objects.all()
+        serializer = UserSerializerMinified(users,many=True)
+        return Response(serializer.data,status.HTTP_200_OK)
+
 class UserCreate(APIView):
     permission_classes = (permissions.AllowAny,)
     authentication_classes = ()
