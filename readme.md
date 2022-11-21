@@ -20,6 +20,7 @@ A Site where students can see their progress.
 - Ability to change profile picture or auto generate from discord/username
 - Connection with CampusId
 - Connection with Discord
+- Image Compression
 
 
 ### Discord Bot
