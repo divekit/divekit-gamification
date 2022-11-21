@@ -16,6 +16,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         # token['app_lang'] = user.main_language
         token["username"] = user.username
         token["theme"] = user.get_theme_display()
+        token["is_staff"] = user.is_staff
         if(user.img):
             token["img"] = user.img.url
         else:
@@ -73,6 +74,35 @@ class UserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
+
+
+class UserSerializerMinified(serializers.ModelSerializer):
+
+    username = serializers.CharField()
+    badges = serializers.SerializerMethodField()
+    total_badges = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User        
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'discord_username': {'write_only': True},
+            "email":{"write_only":True},
+            'campus_id': {'write_only': True},
+            'badges': {'read_only': True},
+        }
+        exclude = ('last_name',"first_name","groups","is_active","is_superuser","theme","user_permissions")
+
+    def get_total_badges(self,instance):
+        count = UserBadge.objects.filter(owner=instance).count()
+        return count
+
+
+    def get_badges(self,instance):
+        user_badges = UserBadge.objects.filter(owner=instance).all()[:10]
+        return UserBadgeSerializer(user_badges,many=True).data
+
+
 
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True)
