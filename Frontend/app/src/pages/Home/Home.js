@@ -4,7 +4,7 @@ import Sidebar from '../../components/Sidebar/Sidebar';
 
 
 import "./Home.scss"
-import dummy from "./dummy.json";
+
 import Card from '../../components/Card/Card';
 import Badge from '../../components/Badge/Badge';
 import axiosInstance from '../../axios';
@@ -102,7 +102,8 @@ function Home() {
                           key={index} 
                           name={badge.badge.name}
                           total={badge.badge.milestones} 
-                          current={badge.progress} 
+                          current={badge.progress}
+                          progress={true}
                           badgeImg={axiosInstance.defaults.baseURL + badge.badge.img}
                           ></Badge>
                 })}
@@ -122,6 +123,7 @@ function Home() {
                           name={badge.badge.name}
                           total={badge.badge.milestones} 
                           current={badge.progress} 
+                          progress={true}
                           badgeImg={axiosInstance.defaults.baseURL + badge.badge.img}
                           ></Badge>
                 })}

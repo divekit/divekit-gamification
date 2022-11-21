@@ -1,8 +1,8 @@
 import React from 'react'
 import "./Badge.scss"
-function Badge({name,description,total,current,badgeImg,earned}) {
+function Badge({name,description,total,current,badgeImg,progress}) {
   return (
-    <div title={description} className={earned?"badge earned":"badge"}>
+    <div title={description} className={progress?"badge earned":"badge"}>
         <div className='badge-img'><img src={badgeImg} alt={name + " Bild"}></img></div>
         <div className='badge-name'>{name}</div>
         <div className='badge-progress-wrapper'>
@@ -11,7 +11,7 @@ function Badge({name,description,total,current,badgeImg,earned}) {
             total?
                 <div className='badge-progress-inner' style={{width:(100*current/total)+"%"}}></div>
                 :
-                earned?
+                progress?
                     <div className='badge-progress-inner' style={{width:"100%"}}></div>
                     :
                     <div className='badge-progress-inner' style={{width:"0%"}}></div>

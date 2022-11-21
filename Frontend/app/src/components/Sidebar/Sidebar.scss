@@ -244,9 +244,10 @@
         .sidebar-top{
             .sidebar-logo-wrapper{
                 .logo{
+                    
                     // display: none;
                     width: 0;
-                    transition: width 0.5s ease-in-out;
+                    
                 }
                 
             }
@@ -286,15 +287,21 @@
                     font-size: 26px;
                 }
                 .profile-name{
-                    
-                    display: none;
+                    width: 0px;
+                    height: 0px;
+                    // transition-delay: 0.5s;
+                    // transition-property: display;
+                    // display: none;
                 }
             }
             .logout-button{
-                display: none;
+                width: 0px;
+                height: 0px;
+                padding: 0px;
             }
             .footer{
-                display: none;
+                width: 0px;
+                height: 0px;
             }
         }
     }
@@ -313,7 +320,14 @@
                     }
                 }
                 .logo{
+                    transition: width 0.5s ease-in-out;
                     padding-top: 0;
+                    font-size: 24px;
+                    width: 150px;
+                    overflow: hidden;
+                    // text-overflow: ;
+                    white-space: nowrap;
+                    text-overflow:clip;
                 }
             }
             
@@ -323,6 +337,45 @@
                         // transition: width 3s ;
                     }
                 }
+            }
+        }
+        .sidebar-bottom{
+            gap: 0px;
+            .profile{
+                gap: 0px;
+                padding: 0;
+                transition: padding 0.5s ease-in-out;
+                .profile-button{
+                    // width: 50px;
+                    // height: 50px;
+                    // font-size: 26px;
+                    transition: font-size 0.5s ease-in-out,height 0.5s ease-in-out,width 0.5s ease-in-out;
+                    // transition: ;
+                    // transition: ;
+                }
+                .profile-name{
+                    overflow: hidden;
+                    height: 22px;
+                    transition: width 0.5s ease-in-out,height 0.5s ease-in-out;
+                    // transition: ;
+                    // display: none;
+                }
+            }
+            .logout-button{
+                overflow: hidden;
+                height: 22px;
+                width: 100px;
+                transition: width 0.5s ease-in-out, height 0.5s ease-in-out, padding 0.5s ease-in-out;
+                // transition: ;
+                // transition: ;
+            }
+            .footer{
+                overflow: hidden;
+                height: 22px;
+                width: 200px;
+                transition: width 0.5s ease-in-out,height 0.5s ease-in-out,padding 0.5s ease-in-out;
+
+                
             }
         }
     }
