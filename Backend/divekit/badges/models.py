@@ -23,10 +23,28 @@ def update_filename(instance, filename,prefix=None):
 class Module(models.Model):
     name = models.CharField(max_length=255)
     acronym = models.CharField(max_length=15)
-    old = models.BooleanField(default=False,blank=True)
+    active = models.BooleanField(default=True,blank=True)
 
     def __str__(self):
         return "%s - (%s)" % (self.acronym,self.name)
+
+@admin.action(description='Mark as active')
+def make_active(modeladmin, request, queryset):
+    queryset.update(active=True)
+
+@admin.action(description='Mark as deactive')
+def make_deactive(modeladmin, request, queryset):
+    queryset.update(active=False)
+class ModuleAdmin(admin.ModelAdmin):
+    list_display = ['pk', "link_to_name", 'acronym',"active"]
+    search_fields = ['pk',"name__icontains","acronym__icontains"]
+    actions = [make_active,make_deactive]
+    def link_to_name(self, obj):
+        link = reverse("admin:badges_module_change", args=[obj.pk])
+        return format_html('<a href="{}">{}</a>', link, obj.name)
+    link_to_name.admin_order_field = 'name'
+    link_to_name.short_description = 'Name'  
+
 
 class Badge(models.Model):
     name = models.CharField(max_length=255)
@@ -46,8 +64,23 @@ class Badge(models.Model):
     def __str__(self):
         return "%s - %s (%sM)" % (self.pk,self.name,str(self.milestones))
 
+
+
 class BadgeAdmin(admin.ModelAdmin):
-    list_display = ['pk', "name", 'description']
+    list_display = ['link_to_pk', "link_to_name", 'description']
+    search_fields = ['pk',"name__icontains","description__icontains"]
+    
+    def link_to_pk(self, obj):
+        link = reverse("admin:badges_badge_change", args=[obj.pk])
+        return format_html('<a href="{}">{}</a>', link, obj.pk)
+    link_to_pk.admin_order_field = 'pk'
+    link_to_pk.short_description = 'ID'  
+
+    def link_to_name(self, obj):
+        link = reverse("admin:badges_badge_change", args=[obj.pk])
+        return format_html('<a href="{}">{}</a>', link, obj.name)
+    link_to_name.admin_order_field = 'name'
+    link_to_name.short_description = 'Name'  
 
 @receiver(post_save,sender = Badge, dispatch_uid="update_user_progress")
 def update_user_progress(sender,**kwargs):
