@@ -57,7 +57,7 @@ function Community() {
                                           img={progressBadge.badge.img}
                                         ></BadgeSmall>
                                 })}
-                                {user.badges.length < user.total_badges?<div className='badge-more'>+{user.total_badges - user.badges.length}</div>:<></>}
+                                {user.badges.length < user.total_badges?<div className='badge-more'>+{user.total_badges - user.badges.length > 99?"99":user.total_badges - user.badges.length}</div>:<></>}
                                 
                               </div>
                             </td>
