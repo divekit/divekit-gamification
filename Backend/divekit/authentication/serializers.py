@@ -25,19 +25,11 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
 
-
-
-
-
-
-
 class UserSerializer(serializers.ModelSerializer):
     """
     Currently unused in preference of the below.
     """
-    email = serializers.EmailField(
-        required=True
-    )
+    email = serializers.EmailField(required=True, write_only=True)
     username = serializers.CharField()
     password = serializers.CharField(min_length=8, write_only=True)
     # badges = UserBadgeSerializer(many=True)
@@ -54,6 +46,10 @@ class UserSerializer(serializers.ModelSerializer):
             "email":{"write_only":True},
             'campus_id': {'write_only': True},
             'badges': {'read_only': True},
+            "is_staff":{"read_only":True},
+            "last_login":{"read_only":True},
+            "date_joined":{"read_only":True},
+            "total_badges":{"read_only":True}
         }
         exclude = ('last_name',"first_name","groups","is_active","is_superuser","theme","user_permissions")
 
@@ -90,6 +86,10 @@ class UserSerializerMinified(serializers.ModelSerializer):
             "email":{"write_only":True},
             'campus_id': {'write_only': True},
             'badges': {'read_only': True},
+            "is_staff":{"read_only":True},
+            "last_login":{"read_only":True},
+            "date_joined":{"read_only":True},
+            "total_badges":{"read_only":True}
         }
         exclude = ('last_name',"first_name","groups","is_active","is_superuser","theme","user_permissions")
 
