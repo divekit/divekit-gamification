@@ -26,7 +26,7 @@ axiosInstance.interceptors.response.use(
                 originalRequest._retry = true
                 console.log("refreshing")
                 return new Promise((resolve,reject) => {
-                    axiosInstance.post("/v1/token/refresh/",{refresh:refreshToken}).then((response)=>{
+                    axiosInstance.post("/api/v1/token/refresh/",{refresh:refreshToken}).then((response)=>{
                         localStorage.setItem("access",response.data.access);
                         localStorage.setItem("refresh",response.data.refresh);
     
