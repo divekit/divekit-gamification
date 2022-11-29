@@ -12,6 +12,7 @@ We want to have a system that is integrated with the divekit platform. Students 
 - Register
 - Login
 - Logout
+- JWT Auth
 - Reset Password
 - Change Password
 - Sending Email
@@ -22,6 +23,9 @@ We want to have a system that is integrated with the divekit platform. Students 
 - Connection with CampusId
 - Connection with Discord
 - Image Compression
+- Permissions
+- Caching
+
 
 
 ### Discord Bot
@@ -47,3 +51,8 @@ We want to have a system that is integrated with the divekit platform. Students 
 - Single-Page-App
 - Communication with Backend
 - Ability to set a discord notifications through bot
+
+# Tech Stack
+- React as a frontend javascript framework
+- Django as a backend python framework
+- Python with discord.py for discord bot
