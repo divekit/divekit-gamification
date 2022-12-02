@@ -1,7 +1,8 @@
 from rest_framework import serializers
-from .models import Badge,UserBadge
-from authentication.models import User
+from .models import Badge,UserBadge, Module
 from django.core.exceptions import ValidationError
+
+
 class BadgeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Badge
@@ -26,4 +27,11 @@ class UserBadgeSerializer(serializers.ModelSerializer):
     badge = BadgeSerializer()
     class Meta:
         model = UserBadge
+        fields = "__all__"
+
+
+
+class ModuleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Module
         fields = "__all__"

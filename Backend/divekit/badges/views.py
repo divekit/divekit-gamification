@@ -5,8 +5,8 @@ from rest_framework.views import APIView
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from .permissions import IsStaffOrReadOnly, IsStaffOrSelf,IsStaff
-from .models import Badge, UserBadge
-from .serializers import BadgeSerializer, UserBadgeSerializer,BasicUserBadgeSerializer
+from .models import Badge, UserBadge,Module
+from .serializers import BadgeSerializer, UserBadgeSerializer,BasicUserBadgeSerializer,ModuleSerializer
 
 
 class UserBadgeListView(APIView):
@@ -28,7 +28,7 @@ class UserBadgeListView(APIView):
 class BadgeView(APIView):
     permission_classes = (IsStaffOrReadOnly,)
 
-    @method_decorator(cache_page(60*15))
+    # @method_decorator(cache_page(60*15))
     def get(self, request, *args, **kwargs):
         badges = Badge.objects.all()
         
@@ -46,3 +46,14 @@ class BadgeView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ModuleListView(APIView):
+    permission_classes = (IsStaffOrReadOnly,)
+
+
+    # @method_decorator(cache_page(60*15))
+    def get(self,request,*args,**kwargs):
+        modules = Module.objects.all()
+        serializer = ModuleSerializer(modules,many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
