@@ -9,16 +9,19 @@ import Card from '../../components/Card/Card';
 import Badge from '../../components/Badge/Badge';
 import axiosInstance from '../../axios';
 import AuthContext from '../../context/AuthContext';
+import Module from '../../components/Module/Module';
 function Home() {
 
   const { user, setUser } = useContext(AuthContext)
   const [totalBadges,setTotalBadges] = useState(null)
   const [myProfile,setMyProfile] = useState(null)
   const [earnedBadges,setEarnedBadges] = useState(null)
+  const [modules,setModules] = useState(null)
   const [progressedBadges, setProgressedBadges] = useState(null)
   const [availableBadges,setAvailableBadges] = useState(null)
   const [miscBadges,setMiscBadges] = useState(null)
 
+  const [moduleModalToggle,setModuleModalToggle] = useState(false)
   useEffect(()=>{
     if(user){
       axiosInstance.get("/api/v1/badges/").then(response=>{
@@ -27,23 +30,30 @@ function Home() {
       axiosInstance.get("/api/v1/users/"+user.user_id).then(response=>{
         setMyProfile(response.data)
       })
+      axiosInstance.get("/api/v1/modules").then(response=>{
+        response.data.forEach(data => {
+          data.selected = data.active;
+        });
+        setModules(response.data)
+      })
     }
 
   },[user])
 
   useEffect(()=>{
-    if(myProfile && totalBadges){
-
-      console.log(myProfile)
-      console.log(totalBadges)
+    if(myProfile && totalBadges && modules){
+      console.log("CHANGE")
+      // console.log(myProfile)
+      // console.log(totalBadges)
+      // console.log(modules)
 
       let progressedBadgesTmp = myProfile.badges.filter(progressBadge=>{
-        return progressBadge.earned===false;
+        return progressBadge.earned===false && modules.find(modEl => modEl.id === progressBadge.badge.module && modEl.selected);
       })
       setProgressedBadges(progressedBadgesTmp)
       
       let earnedBadgesTmp = myProfile.badges.filter(progressBadge=>{
-        return progressBadge.earned===true;
+        return progressBadge.earned===true && modules.find(modEl => modEl.id === progressBadge.badge.module && modEl.selected);
       })
       setEarnedBadges(earnedBadgesTmp)
       
@@ -66,29 +76,74 @@ function Home() {
           if(found){
             return false;
           }
-          return true
+          if(!modules.find(modEl => modEl.id === badge.module && modEl.selected)){
+            return false;
+          }
+          return true;
         }
-        return false
+        return false;
       }))
 
       setMiscBadges(totalBadges.filter(badge=>{
-        return badge.is_unique===false;
+        return badge.is_unique===false && modules.find(modEl => modEl.id === badge.module && modEl.selected);
       }))
 
     }
-  },[myProfile,totalBadges])
+  },[modules,myProfile,totalBadges],[modules])
 
+  const moduleClickHandler = (id) => {
+    console.log(id)
+    let modulesTmp = modules
+    let foundModule = modulesTmp.find(module => module.id === id)
+    if(foundModule){
+      foundModule.selected = !foundModule.selected
+    }
+    console.log(modulesTmp)
+    setModules([...modulesTmp])
+  }
 
-  useEffect(()=>{
-    console.log("M",availableBadges)
-  },[availableBadges])
   return (<>
+  {moduleModalToggle?<div className='modal' id="module-modal" onClick={()=>{setModuleModalToggle(false)}}>
+    <div className='modal-box' onClick={(e)=>{e.stopPropagation()}}>
+      <div className='modal-close' onClick={()=>{setModuleModalToggle(false)}}>X</div>
+    </div>
+    </div>:<></>
+  }
   <div className='homepage def-page'>
         <Sidebar></Sidebar>
         <div className='content'>
           <div className='content-title'>
             Badges
           </div>
+
+
+
+          {modules?
+            <div className='modules'>
+              {modules.map((modEl,index)=>{
+                  if(modEl.active){
+                    return <Module id={modEl.id} key={index} moduleClickHandler={moduleClickHandler} moduleName={modEl.name} moduleAcronym={modEl.acronym} isSelected={modEl.selected}></Module>
+                  }
+                  return null
+                  
+                })
+              }
+              <div className='module modules-modal-toggler' onClick={()=>{setModuleModalToggle(true)}}>Sonstige</div>
+            </div>
+            :
+            <div className='modules modules-loading'>
+              <div className='module-loading'></div>
+              <div className='module-loading'></div>
+              <div className='module-loading'></div>
+              <div className='module-loading'></div>
+              <div className='module-loading'></div>
+            </div>
+          }
+          <div >
+
+          </div>
+          
+
           <div className='cards'>
             
             <Card collapsed={false} title={"Erworben"} count={earnedBadges?earnedBadges.length:"0"}>
@@ -144,6 +199,7 @@ function Home() {
                           name={badge.name}
                           total={badge.milestones} 
                           current={0} 
+                          hidden={badge.is_hidden}
                           badgeImg={axiosInstance.defaults.baseURL + badge.img}
                           ></Badge>
                 })}
@@ -161,6 +217,7 @@ function Home() {
                           description={badge.description}
                           key={index} 
                           name={badge.name}
+                          hidden={badge.is_hidden}
                           // total={badge.milestones} 
                           // current={0} 
                           badgeImg={axiosInstance.defaults.baseURL + badge.img}

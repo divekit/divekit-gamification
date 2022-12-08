@@ -1,10 +1,20 @@
 import React from 'react'
+import axiosInstance from '../../axios'
 import "./Badge.scss"
-function Badge({name,description,total,current,badgeImg,progress}) {
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+function Badge({name,description,total,current,badgeImg,progress,hidden}) {
   return (
-    <div title={description} className={progress?"badge earned":"badge"}>
-        <div className='badge-img'><img src={badgeImg} alt={name + " Bild"}></img></div>
-        <div className='badge-name'>{name}</div>
+    <div className={progress?"badge earned":"badge"}>
+      {hidden?<>
+        <div className='badge-img'><div className='hidden-badge'><QuestionMarkIcon></QuestionMarkIcon></div></div>
+        <div className='badge-name'>???</div>
+        <div className='badge-progress-wrapper'>
+            <div className='badge-progress-counter'>?</div>
+            <div className='badge-progress-inner' style={{width:"0%"}}></div>            
+        </div>
+        </>:<>
+        <div className='badge-img' title={description}><img src={badgeImg} alt={name + " Bild"}></img></div>
+        <div className='badge-name' title={name}>{name}</div>
         <div className='badge-progress-wrapper'>
             <div className='badge-progress-counter'>{total?(current+"/"+total):"99+"}</div>
             {
@@ -16,8 +26,8 @@ function Badge({name,description,total,current,badgeImg,progress}) {
                     :
                     <div className='badge-progress-inner' style={{width:"0%"}}></div>
             }
-            
-        </div>
+        </div></>}
+        
         
     </div>
   )

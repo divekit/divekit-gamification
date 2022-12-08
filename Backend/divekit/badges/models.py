@@ -53,6 +53,7 @@ class Badge(models.Model):
     milestones = models.IntegerField(default=1,null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     is_unique = models.BooleanField(default=True, null=False)
+    is_hidden = models.BooleanField(default=False, null=False)
     module = models.ForeignKey(Module, on_delete=models.SET_NULL, null=True, default=None)
 
     # def save(self):

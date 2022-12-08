@@ -1,8 +1,14 @@
+.modules{
+    display: flex;
+    flex-direction: row;
+    gap:10px;
+    margin: 0 10px 20px 10px;
+}
+
 .cards{
     display: flex;
     flex-direction: column;
     gap: 10px;
-
     .badges{
         display: flex;
         flex-direction: row;

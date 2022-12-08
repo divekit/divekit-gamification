@@ -42,18 +42,22 @@ function Login() {
 
     return (<div className='login-page'>
     <div className='content'>
-    <div className='login-page-content'>
+    
       <div className='content-title'><h2>Login</h2></div>
       {errors? errors.detail?<div className='error-detail'>{errors.detail}</div>:<></>:<></>}
     
         <div className='form-wrapper'>
           <form>
-            <label htmlFor='username'>Username {errors?<div className='error'> {errors.username?errors.username:""}</div>:""}</label>
-            <input onInput={handleInput} placeholder='Username' id='username' type="text" name='username'></input>
-            <label htmlFor='password'>Password {errors?<div className='error'> {errors.password?errors.password:""}</div>:""}</label>
-            <input onInput={handleInput} placeholder='Password' id='password' type="password" name='password'></input>
-            <div className='password-forgot'><span onClick={()=>{navigate("/forget")}}>Forget password? </span></div>
-            <button  onClick={handleSubmit}>Login</button>
+            <label htmlFor='username'>Username {errors?<div className='error'> {errors.username?errors.username:""}</div>:""}
+              <input onInput={handleInput} placeholder='Username' id='username' type="text" name='username'></input>
+            </label>
+            
+            <label htmlFor='password'>Password {errors?<div className='error'> {errors.password?errors.password:""}</div>:""}
+              <input onInput={handleInput} placeholder='Password' id='password' type="password" name='password'></input>
+            </label>
+            
+            <div className='password-forgot'><span onClick={()=>{navigate("/forget")}}>Passwrot vergessen? </span></div>
+            <button className='btn'  onClick={handleSubmit}>Anmelden</button>
           </form>
           
 
@@ -61,10 +65,9 @@ function Login() {
           {/* <div className='form-info'>(*) Required fields</div> */}
         </div>
         
-        <div className='have-account'>Don't have an account? <span onClick={()=>{navigate("/register")}}>Register</span></div>
+        <div className='have-account'>Falls Sie noch kein Konto haben, können Sie sich <span className='link' onClick={()=>{navigate("/register")}}>hier registrieren</span>.</div>
         
         
-    </div>
       
     </div>  
   </div>

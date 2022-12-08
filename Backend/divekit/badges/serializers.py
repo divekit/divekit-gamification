@@ -7,6 +7,20 @@ class BadgeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Badge
         fields = "__all__"
+    
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        if representation['is_hidden']:
+            del (representation["name"],representation["description"],representation["img"],representation["milestones"])
+
+        return representation
+
+
+class BadgeSerializerNoHidden(serializers.ModelSerializer):
+    class Meta:
+        model = Badge
+        fields = "__all__"
+    
 
 
 
@@ -24,7 +38,7 @@ class BasicUserBadgeSerializer(serializers.ModelSerializer):
         return value
 
 class UserBadgeSerializer(serializers.ModelSerializer):
-    badge = BadgeSerializer()
+    badge = BadgeSerializerNoHidden()
     class Meta:
         model = UserBadge
         fields = "__all__"

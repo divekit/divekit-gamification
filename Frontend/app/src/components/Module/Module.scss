@@ -1,0 +1,16 @@
+.module{
+    width: fit-content;
+    background-color: var(--button-color);
+    outline: 2px solid gray;
+    padding: 5px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    &.selected{
+        background-color: var(--secondary-color);
+        color: black;
+    }
+    &:not(.selected):hover{
+        background-color: gray;
+        color: white;
+    }
+}
