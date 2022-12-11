@@ -53,11 +53,11 @@ function Login() {
             </label>
             
             <label htmlFor='password'>Password {errors?<div className='error'> {errors.password?errors.password:""}</div>:""}
-              <input onInput={handleInput} placeholder='Password' id='password' type="password" name='password'></input>
+              <input onInput={handleInput} placeholder='*********' id='password' type="password" name='password'></input>
             </label>
             
-            <div className='password-forgot'><span onClick={()=>{navigate("/forget")}}>Passwrot vergessen? </span></div>
-            <button className='btn'  onClick={handleSubmit}>Anmelden</button>
+            <div className='password-forgot'><span className='link' onClick={()=>{navigate("/forget")}}>Passwort vergessen? </span></div>
+            <button className='btn btn-rounded'  onClick={handleSubmit}>Anmelden</button>
           </form>
           
 

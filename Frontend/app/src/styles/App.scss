@@ -15,6 +15,7 @@
     --link-color: #2D4CF0;
     --progress-color: rgb(0, 209, 0);
     --text-disabled-color:#ccc;
+    --error-color:rgb(245, 74, 74);
 }
   
 [data-theme="dark"] {
@@ -31,6 +32,7 @@
     --selected-color: #555961;
     --progress-color: green;
     --text-disabled-color:#ccc;
+    --error-color:rgb(245, 74, 74);
 }
 
 html{
@@ -82,6 +84,9 @@ body {
 .link{
   color: var(--link-color);
   cursor: pointer;
+}
+.link:hover{
+  text-decoration: underline;
 }
 
 .modal{
