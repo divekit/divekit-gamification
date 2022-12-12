@@ -5,3 +5,5 @@ django-cors-headers==3.13.0
 PyJWT==2.6.0
 Pillow==9.3.0
 mysqlclient==2.1.1
+environ==1.0
+django-environ==0.9.0

@@ -1,7 +1,8 @@
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth import  get_user_model, get_user
 from django.core.exceptions import ValidationError
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework import serializers
+from rest_framework import serializers,exceptions
 from .models import User
 from badges.models import UserBadge
 from badges.serializers import BadgeSerializer,UserBadgeSerializer
@@ -9,6 +10,15 @@ from badges.serializers import BadgeSerializer,UserBadgeSerializer
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+
+    
+    def validate(self,data):
+        validated_data = super().validate(data)
+        if not self.user.is_verified:
+            raise serializers.ValidationError({'detail': ['The user has not been verified.']})
+        return validated_data
+        
+
     @classmethod
     def get_token(cls, user):
         token = super(MyTokenObtainPairSerializer, cls).get_token(user)

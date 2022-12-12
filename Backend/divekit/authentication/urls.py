@@ -1,6 +1,6 @@
 from django.urls import path
 from rest_framework_simplejwt import views as jwt_views
-from .views import ObtainTokenPairWithColorView, UserDetailView,UserCreate,UserListView,UserListViewMinified,UserBadgeListView
+from .views import ObtainTokenPairWithColorView, UserDetailView,UserCreate,UserListView,UserListViewMinified,UserBadgeListView,UserActivationView
 
 urlpatterns = [
     path('token/obtain/', ObtainTokenPairWithColorView.as_view(),
@@ -10,5 +10,6 @@ urlpatterns = [
     path('users/<int:user_id>/', UserDetailView.as_view(), name="user"),
     path("users/",UserListView.as_view(), name="users"),
     path("users/minified/",UserListViewMinified.as_view(),name="users_minified"),
-    path("users/<int:user_id>/badges/",UserBadgeListView.as_view(),name="user_badges")
+    path("users/<int:user_id>/badges/",UserBadgeListView.as_view(),name="user_badges"),
+    path("users/confirmation/",UserActivationView.as_view(),name="confirmation")
 ]

@@ -24,6 +24,7 @@ class User(AbstractUser):
     discord_username = models.CharField(max_length=255)
     img = models.ImageField(upload_to=update_filename,blank=True,default="users/default_orange.jpg")
     theme = models.IntegerField(choices=THEMES, default=1)
+    is_verified = models.BooleanField(default=False)
 
 
 
