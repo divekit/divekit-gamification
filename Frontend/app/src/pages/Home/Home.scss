@@ -18,3 +18,36 @@
         overflow: auto;
     }
 }
+
+
+.modal{
+    // box-sizing: border-box;
+    .modal-box{
+        box-sizing: border-box;
+        border-radius: 20px;
+        padding: 20px;
+        width: 300px;
+        .modal-header{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            .modal-close{
+                cursor: pointer;
+            }
+            .modal-title{
+                font-size: 1.5em;
+                // line-height: 2em;
+                font-weight: bold;
+
+            }
+        }
+        .modal-content{
+            padding-top: 10px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    }
+}

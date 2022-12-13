@@ -42,10 +42,6 @@ function Home() {
 
   useEffect(()=>{
     if(myProfile && totalBadges && modules){
-      console.log("CHANGE")
-      // console.log(myProfile)
-      // console.log(totalBadges)
-      // console.log(modules)
 
       let progressedBadgesTmp = myProfile.badges.filter(progressBadge=>{
         return progressBadge.earned===false && modules.find(modEl => modEl.id === progressBadge.badge.module && modEl.selected);
@@ -92,20 +88,31 @@ function Home() {
   },[modules,myProfile,totalBadges],[modules])
 
   const moduleClickHandler = (id) => {
-    console.log(id)
     let modulesTmp = modules
     let foundModule = modulesTmp.find(module => module.id === id)
     if(foundModule){
       foundModule.selected = !foundModule.selected
     }
-    console.log(modulesTmp)
     setModules([...modulesTmp])
   }
 
   return (<>
   {moduleModalToggle?<div className='modal' id="module-modal" onClick={()=>{setModuleModalToggle(false)}}>
     <div className='modal-box' onClick={(e)=>{e.stopPropagation()}}>
-      <div className='modal-close' onClick={()=>{setModuleModalToggle(false)}}>X</div>
+      <div className='modal-header'>
+        <div className='modal-title'>Sonstige</div>
+        <div className='modal-close btn btn-rounded' onClick={()=>{setModuleModalToggle(false)}}>X</div>
+        
+      </div>
+      <div className='modal-content'>
+        {modules.map((modEl,index)=>{
+                  if(!modEl.active && !modEl.selected){
+                    return <Module id={modEl.id} key={index} moduleClickHandler={moduleClickHandler} moduleName={modEl.name} moduleAcronym={modEl.acronym} isSelected={modEl.selected}></Module>
+                  }
+                  return null
+                })
+              }
+      </div>
     </div>
     </div>:<></>
   }
@@ -122,6 +129,14 @@ function Home() {
             <div className='modules'>
               {modules.map((modEl,index)=>{
                   if(modEl.active){
+                    return <Module id={modEl.id} key={index} moduleClickHandler={moduleClickHandler} moduleName={modEl.name} moduleAcronym={modEl.acronym} isSelected={modEl.selected}></Module>
+                  }
+                  return null
+                  
+                })
+              }
+              {modules.map((modEl,index)=>{
+                  if(!modEl.active && modEl.selected){
                     return <Module id={modEl.id} key={index} moduleClickHandler={moduleClickHandler} moduleName={modEl.name} moduleAcronym={modEl.acronym} isSelected={modEl.selected}></Module>
                   }
                   return null
