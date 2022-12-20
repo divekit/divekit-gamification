@@ -19,7 +19,7 @@ class BadgeSerializer(serializers.ModelSerializer):
 class BadgeSerializerNoHidden(serializers.ModelSerializer):
     class Meta:
         model = Badge
-        fields = "__all__"
+        exclude = ("created_at",)
     
 
 
@@ -30,12 +30,19 @@ class BasicUserBadgeSerializer(serializers.ModelSerializer):
         fields = "__all__"
     
     def validate_badge(self,value):
-        if value.is_unique:
-            if UserBadge.objects.filter(owner=self.initial_data["owner"],badge=value):
+        if value.is_unique and self.context['request'].method == "POST":
+            user_badge = UserBadge.objects.filter(owner=self.initial_data["owner"],badge=value).get()
+            if user_badge:
                 raise ValidationError('This Badge (%s-%s) is unique and therefore cannot be assigned twice to a user' % (value.id, value.name))
         
         
         return value
+
+class UserBadgeSerializerMinified(serializers.ModelSerializer):
+    badge = BadgeSerializerNoHidden()
+    class Meta:
+        model = UserBadge
+        exclude = ("progress","earned_at","owner","last_progress_at")
 
 class UserBadgeSerializer(serializers.ModelSerializer):
     badge = BadgeSerializerNoHidden()

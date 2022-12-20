@@ -5,13 +5,12 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers,exceptions
 from .models import User
 from badges.models import UserBadge
-from badges.serializers import BadgeSerializer,UserBadgeSerializer
-
-
+from badges.serializers import BadgeSerializer,UserBadgeSerializer,UserBadgeSerializerMinified
+from drf_spectacular.utils import extend_schema,extend_schema_field
+from drf_spectacular.types import OpenApiTypes
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
-    
     def validate(self,data):
         validated_data = super().validate(data)
         if not self.user.is_verified:
@@ -35,16 +34,30 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
 
-class UserSerializer(serializers.ModelSerializer):
-    """
-    Currently unused in preference of the below.
-    """
+class UserCreateSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True, write_only=True)
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(min_length=8, write_only=True)
+
+    class Meta:
+        model = User
+        # fields = ('email', 'username', 'password')
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'discord_username': {'write_only': True},
+            "email":{"write_only":True},
+            'campus_id': {'write_only': True},
+        }
+        fields = ("email","password","username","discord_username","campus_id")
+
+
+class UserSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(required=True)
     username = serializers.CharField()
     password = serializers.CharField(min_length=8, write_only=True)
-    # badges = UserBadgeSerializer(many=True)
     badges = serializers.SerializerMethodField()
     total_badges = serializers.SerializerMethodField()
+
 
     class Meta:
         model = User
@@ -52,16 +65,16 @@ class UserSerializer(serializers.ModelSerializer):
         
         extra_kwargs = {
             'password': {'write_only': True},
-            'discord_username': {'write_only': True},
-            "email":{"write_only":True},
-            'campus_id': {'write_only': True},
+            # 'discord_username': {'write_only': True},
+            # "email":{"read_only":True},
+            'campus_id': {'read_only': True},
             'badges': {'read_only': True},
             "is_staff":{"read_only":True},
-            "last_login":{"read_only":True},
+            # "last_login":{"read_only":True},
             "date_joined":{"read_only":True},
             "total_badges":{"read_only":True}
         }
-        exclude = ('last_name',"first_name","groups","is_active","is_superuser","theme","user_permissions")
+        exclude = ('last_name',"first_name","groups","is_active","is_superuser","theme","user_permissions","last_login","campus_id","date_joined","is_verified")
 
     def get_total_badges(self,instance):
         count = UserBadge.objects.filter(owner=instance).count()
@@ -87,30 +100,46 @@ class UserSerializerMinified(serializers.ModelSerializer):
     username = serializers.CharField()
     badges = serializers.SerializerMethodField()
     total_badges = serializers.SerializerMethodField()
+    discord_username = serializers.SerializerMethodField()
 
     class Meta:
         model = User        
         extra_kwargs = {
-            'password': {'write_only': True},
+            # 'password': {'write_only': True},
             'discord_username': {'write_only': True},
-            "email":{"write_only":True},
-            'campus_id': {'write_only': True},
+            # "email":{"write_only":True},
+            # 'campus_id': {'write_only': True},
             'badges': {'read_only': True},
-            "is_staff":{"read_only":True},
-            "last_login":{"read_only":True},
-            "date_joined":{"read_only":True},
+            # "is_staff":{"read_only":True},
+            # "last_login":{"read_only":True},
+            # "date_joined":{"read_only":True},
             "total_badges":{"read_only":True}
         }
-        exclude = ('last_name',"first_name","groups","is_active","is_superuser","theme","user_permissions")
+        exclude = ("is_staff",'last_name',"first_name","groups","is_active","is_superuser","theme","user_permissions","notify_badge","password","is_verified","email","campus_id","visible_in_community","show_discord_username","date_joined","last_login")
+    
+    def get_discord_username(self,instance):
+        print(instance)
+        if not instance.show_discord_username:
+            return None
+        return instance.discord_username
 
+    @extend_schema_field(OpenApiTypes.INT)
     def get_total_badges(self,instance):
         count = UserBadge.objects.filter(owner=instance).count()
         return count
 
-
+    @extend_schema_field(UserBadgeSerializerMinified)
     def get_badges(self,instance):
-        user_badges = UserBadge.objects.filter(owner=instance).all()[:10]
-        return UserBadgeSerializer(user_badges,many=True).data
+        if self.context and self.context["request"]:
+            modules = self.context['request'].query_params.getlist('modules[]',"")
+            if modules:
+                user_badges = UserBadge.objects.filter(owner=instance).filter(earned=True).filter(badge__module__in=[int(x) for x in modules]).all()[:10]
+            else:
+                user_badges = UserBadge.objects.filter(owner=instance).filter(earned=True).all()[:10]
+        else:
+            user_badges = UserBadge.objects.filter(owner=instance).filter(earned=True).all()[:10]
+            
+        return UserBadgeSerializerMinified(user_badges,many=True).data
 
 
 

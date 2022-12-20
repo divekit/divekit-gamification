@@ -1,4 +1,4 @@
-from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework import status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -8,39 +8,69 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from .permissions import IsStaffOrReadOnly,IsStaffOrSelf,IsStaff
 from .models import User
-from .serializers import ChangePasswordSerializer, MyTokenObtainPairSerializer, UserSerializer,UserSerializerMinified
+from .serializers import ChangePasswordSerializer, MyTokenObtainPairSerializer, UserSerializer,UserSerializerMinified,UserCreateSerializer
 from rest_framework import serializers
 
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
 from badges.models import UserBadge
 from badges.serializers import BasicUserBadgeSerializer,UserBadgeSerializer
 
+
+class CustomTokenRefreshView(TokenRefreshView):
+    
+    @extend_schema(
+        tags=["auth"]
+    )
+    def post(self,request,*args,**kwargs):
+        response = super().post(request,*args,**kwargs)
+        return response
+
 class ObtainTokenPairWithColorView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
+    @extend_schema(
+        tags=["auth"]
+    )
     def post(self, request, *args, **kwargs):
         response = super().post(request,*args,**kwargs)
         return response
 
 
 class UserListView(APIView):
+    permission_classes = (IsStaff,)
+    
+    @extend_schema(
+        tags=["auth"],
+        exclude=True
+        
+    )
     def get(self,request,*args,**kwargs):
         users = User.objects.all()
         serializer = UserSerializer(users,many=True)
         return Response(serializer.data, status.HTTP_200_OK)
 
-
 class UserListViewMinified(APIView):
 
-    @method_decorator(cache_page(60*15))
+    @extend_schema(
+        tags=["auth"],
+        operation_id="asdasd",
+        responses={200:UserSerializerMinified}
+    )
     def get(self,request,*args,**kwargs):
+        
         users = User.objects.all()
-        serializer = UserSerializerMinified(users,many=True)
+        serializer = UserSerializerMinified(users,many=True,context = {'request':request})
         return Response(serializer.data,status.HTTP_200_OK)
 
 class UserCreate(APIView):
     permission_classes = (permissions.AllowAny,)    
 
+    @extend_schema(
+        tags=["auth"],
+        request=UserCreateSerializer
+    )
     def post(self, request, format='json'):
-        serializer = UserSerializer(data=request.data)
+        serializer = UserCreateSerializer(data=request.data)
         if serializer.is_valid():
             email_exists = User.objects.filter(
                 email=serializer.validated_data["email"]).exists()
@@ -70,6 +100,11 @@ class UserCreate(APIView):
 
 class UserActivationView(APIView):
     permission_classes = (permissions.AllowAny,)
+
+    @extend_schema(
+        tags=["auth"],
+        exclude=True
+    )
     def get(self,request,*args,**kwargs):
         
         user_id = request.query_params.get('user_id', '')
@@ -99,19 +134,32 @@ class UserActivationView(APIView):
         default_token_generator
         user.is_verified = True
         user.save()
-        return Response("Email successfully confirmed",status=status.HTTP_200_OK)
+        return Response({"success":True,"message":"Email successfully confirmed"},status=status.HTTP_200_OK)
 
 class UserDetailView(APIView):
 
     permission_classes = (IsStaffOrSelf,)
 
     # @method_decorator(cache_page(60*15))
+    @extend_schema(
+        tags=["auth"]
+    )
     def get(self, request, *args, **kwargs):
+        print(request.user.id)
         user = User.objects.get(id=kwargs["user_id"])
-        serializer = UserSerializer(user)
+
+        if request.user.id == kwargs["user_id"]:
+            serializer = UserSerializer(user)
+        else:
+            serializer = UserSerializerMinified(user)
+        
         return Response(serializer.data, status.HTTP_200_OK)
 
 
+    @extend_schema(
+        tags=["auth"],
+        request=UserSerializer
+    )
     def put(self, request, *args, **kwargs):
         user = User.objects.get(id=kwargs["user_id"])
         self.check_object_permissions(self.request, user)
@@ -124,18 +172,34 @@ class UserDetailView(APIView):
         if serializer.is_valid():
             return Response(serializer.data, status.HTTP_200_OK)
 
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
+    @extend_schema(
+        tags=["auth"]
+    )
+    def delete(self,request,*args,**kwargs):
+        user = User.objects.get(id=kwargs["user_id"])
+        self.check_object_permissions(self.request, user)
+        if user:
+            user.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class UserBadgeListView(APIView):
     permission_classes = (IsStaffOrReadOnly,)
 
+    @extend_schema(
+        tags=["auth"]
+    )
     def get(self,request,*args,**kwargs):
 
         badges = UserBadge.objects.filter(owner=kwargs["user_id"]).all()
         serializer = UserBadgeSerializer(badges,many=True)
         return Response(data=serializer.data,status=status.HTTP_200_OK)
 
+    @extend_schema(
+        tags=["auth"]
+    )
     def post(self,request,*args,**kwargs):
         serializer = BasicUserBadgeSerializer(data=request.data)
         if serializer.is_valid():
