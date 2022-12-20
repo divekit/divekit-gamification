@@ -4,9 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../context/AuthContext';
 import jwt from 'jwt-decode';
 import "./Login.scss"
+import { ThemeContext } from '@emotion/react';
 
 function Login() {
     const { user, setUser } = useContext(AuthContext)
+    const {theme,toggleTheme} = useContext(ThemeContext)
     const [userInput,setUserInput] = useState({});
     const [errors,setErrors] = useState(null);
     const navigate = useNavigate();
@@ -20,9 +22,9 @@ function Login() {
             let data = response.data;
             localStorage.setItem('access', data["access"]);
             localStorage.setItem('refresh', data["refresh"]);
-
+            let decodedToken = jwt(data["access"])
             axiosInstance.defaults.headers['Authorization'] = "Bearer "+ data["access"];
-            setUser(jwt(data["access"]))
+            setUser(decodedToken)            
             navigate("/")
         }).catch(error=>{
             console.log("ERROR",error);

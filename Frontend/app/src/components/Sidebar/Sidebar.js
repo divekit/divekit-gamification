@@ -21,12 +21,10 @@ function Sidebar() {
 
 
     useEffect(()=>{
-        console.log(user)
         let img = new Image();
         img.src = axiosInstance.defaults.baseURL+user.img;
         img.onload = () => {
-            // console.log(img.height);
-            // console.log(img.width);
+
             if(img.height > img.width){
                 setProfileImageHigherWidth(true)
             }
@@ -39,7 +37,6 @@ function Sidebar() {
 
 
     const handleLogout = () =>{
-        console.log("LOGOUT CLICKED")
         setUser(null)
     }
     
@@ -65,15 +62,15 @@ function Sidebar() {
                                 <PeopleRoundedIcon></PeopleRoundedIcon><div className='label'>Community</div>
                                 </NavLink>
                             </li>
-                            <li>
+                            {/* <li>
                                 <NavLink to="/settings" className={({ isActive }) => isActive ? "selected" : undefined}>
                                     <SettingsRoundedIcon></SettingsRoundedIcon><div className='label'>Einstellungen</div>
                                 </NavLink>
-                            </li>
+                            </li> */}
                             {user.is_staff?<li>
-                                <NavLink to="/admin" className={({ isActive }) => isActive ? "selected" : undefined}>
+                                <a href={axiosInstance.defaults.baseURL+"/admin/"} rel="noreferrer" target="_blank">
                                 <AdminPanelSettingsRoundedIcon></AdminPanelSettingsRoundedIcon><div className='label'>Moderation</div>
-                                </NavLink>
+                                </a>
                             </li>:<></>}
                         </ul>
                     
@@ -85,9 +82,9 @@ function Sidebar() {
                 <div className='sidebar-bottom'>
                     <div className='seperator'></div>
                     <div className='profile'>
-                        <div onClick={()=>{navigate("/profile/"+user.user_id)}} className='profile-button'><div className="profile-letter">{user.username.charAt(0).toUpperCase()}</div><img className={profileImageHigherWidth?'profile-img higher-width':'profile-img'} alt="Profil Bild" src={axiosInstance.defaults.baseURL+user.img}/></div>
+                        <div onClick={()=>{navigate("/profile/")}} className='profile-button'><div className="profile-letter">{user.username.charAt(0).toUpperCase()}</div><img className={profileImageHigherWidth?'profile-img higher-width':'profile-img'} alt="Profil Bild" src={axiosInstance.defaults.baseURL+user.img}/></div>
                         {/* <div onClick={()=>{navigate("/profile/"+user.user_id)}} className='profile-button'><div className="profile-letter">{user.username.charAt(0).toUpperCase()}</div><img className='profile-img' src={"https://images.pexels.com/photos/5800782/pexels-photo-5800782.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"}/></div> */}
-                        <div onClick={()=>{navigate("/profile/"+user.user_id)}} className='profile-name'>{user.username.charAt(0).toUpperCase() + user.username.slice(1)}</div>
+                        <div onClick={()=>{navigate("/profile/")}} className='profile-name'>{user.username.charAt(0).toUpperCase() + user.username.slice(1)}</div>
                     </div>
                     <div onClick={handleLogout} className='btn logout-button btn-rounded'>Abmelden</div>
                     {theme==="light"?<DarkModeRoundedIcon className='theme-icon dark' onClick={toggleTheme}></DarkModeRoundedIcon>:<LightModeRoundedIcon className='theme-icon light' onClick={toggleTheme}></LightModeRoundedIcon>}

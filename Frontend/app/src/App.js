@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ThemeContext from './context/ThemeContext';
 import AuthContext from "./context/AuthContext";
 import { BrowserRouter, Route,Routes, Navigate,useLocation } from 'react-router-dom';
@@ -15,22 +15,31 @@ import Register from './pages/Register/Register';
 
 function App() {
   const [user, setUser] = useState(localStorage.getItem("access") ? jwt(localStorage.getItem("access")) : null);
-  const [theme,setTheme] = useState()
+  const [theme,setTheme] = useState(null)
   
   useEffect(()=>{
-    // console.log(user)
     if(!user){
-      // console.log("LOGGED OUT")
       localStorage.removeItem("access")
       localStorage.removeItem("refresh")
     }
+    else{
+      // console.log(user)
+      // setTheme(user.theme)
+      console.log("USER UPDATED")
+    }
 
   },[user])
+
+  const updateUserTheme = (theme) => {
+    setUser({...user,theme:theme})
+
+  }
 
   useEffect(() => {
     if(theme){
       document.documentElement.setAttribute("data-theme", theme);
       localStorage.setItem("theme", theme);
+      
     }else{
       let savedTheme = localStorage.getItem("theme")
       if(savedTheme){
@@ -45,15 +54,18 @@ function App() {
   const toggleTheme = () => {
     if(theme === "light"){
         setTheme("dark");
+        updateUserTheme("dark")
     }
     else{
         setTheme("light");
+        updateUserTheme("light")
     }
   }
 
 
   return (
 <>
+
 <AuthContext.Provider value={{user,setUser}}>
     <Helmet>
         <title>ArchiBadge</title>
@@ -66,7 +78,7 @@ function App() {
           <Route path="/community" element={<ProtectedRoute user={user}><Community/></ProtectedRoute>} />
           <Route path="/settings" element={<ProtectedRoute user={user}><Settings/></ProtectedRoute>} />
           <Route path="/admin" element={<ProtectedRoute user={user} isStaff={true}><Admin/></ProtectedRoute>} />
-          <Route path="/profile/:userId" element={<ProtectedRoute user={user}><Profile/></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute user={user}><Profile/></ProtectedRoute>} />
           <Route path="/login" element={<ProtectedRoute user={user} redirect="/"><Login/></ProtectedRoute>}></Route>
           <Route path="/register" element={<ProtectedRoute user={user} redirect="/"><Register/></ProtectedRoute>}></Route>
         </Routes>

@@ -14,7 +14,7 @@ function Home() {
 
   const { user, setUser } = useContext(AuthContext)
   const [totalBadges,setTotalBadges] = useState(null)
-  const [myProfile,setMyProfile] = useState(null)
+  const [myBadges,setMyBadges] = useState(null)
   const [earnedBadges,setEarnedBadges] = useState(null)
   const [modules,setModules] = useState(null)
   const [progressedBadges, setProgressedBadges] = useState(null)
@@ -27,8 +27,9 @@ function Home() {
       axiosInstance.get("/api/v1/badges/").then(response=>{
         setTotalBadges(response.data)
       })
-      axiosInstance.get("/api/v1/users/"+user.user_id).then(response=>{
-        setMyProfile(response.data)
+      axiosInstance.get("/api/v1/users/"+user.user_id+"/badges/").then(response=>{
+        setMyBadges(response.data)
+        console.log(response.data)
       })
       axiosInstance.get("/api/v1/modules").then(response=>{
         response.data.forEach(data => {
@@ -41,14 +42,14 @@ function Home() {
   },[user])
 
   useEffect(()=>{
-    if(myProfile && totalBadges && modules){
+    if(myBadges && totalBadges && modules){
 
-      let progressedBadgesTmp = myProfile.badges.filter(progressBadge=>{
+      let progressedBadgesTmp = myBadges.filter(progressBadge=>{
         return progressBadge.earned===false && modules.find(modEl => modEl.id === progressBadge.badge.module && modEl.selected);
       })
       setProgressedBadges(progressedBadgesTmp)
       
-      let earnedBadgesTmp = myProfile.badges.filter(progressBadge=>{
+      let earnedBadgesTmp = myBadges.filter(progressBadge=>{
         return progressBadge.earned===true && modules.find(modEl => modEl.id === progressBadge.badge.module && modEl.selected);
       })
       setEarnedBadges(earnedBadgesTmp)
@@ -85,7 +86,7 @@ function Home() {
       }))
 
     }
-  },[modules,myProfile,totalBadges],[modules])
+  },[modules,myBadges,totalBadges],[modules])
 
   const moduleClickHandler = (id) => {
     let modulesTmp = modules
@@ -221,7 +222,7 @@ function Home() {
               </div>
               :"Kein Badge gefunden"}
             </Card>
-            <Card collapsed={false} title={"Misc"} count={miscBadges?miscBadges.length:"0"}>
+            <Card collapsed={true} title={"Misc"} count={miscBadges?miscBadges.length:"0"}>
             {miscBadges?
               // console.log("")
               <div className='badges'>

@@ -5,6 +5,7 @@
     padding: 5px 10px;
     border-radius: 10px;
     cursor: pointer;
+    user-select: none;
     &.selected{
         background-color: var(--secondary-color);
         color: black;

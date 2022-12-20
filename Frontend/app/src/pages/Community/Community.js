@@ -14,26 +14,40 @@ function Community() {
   const [moduleModalToggle,setModuleModalToggle] = useState(false)
 
 
-  useEffect(()=>{
-    if(modules && communityUsers){
-      let tmpCommunityUsers = communityUsers
-      tmpCommunityUsers.forEach(communityUser => {
+  // useEffect(()=>{
+  //   if(modules && communityUsers){
+  //     let tmpCommunityUsers = communityUsers
+  //     tmpCommunityUsers.forEach(communityUser => {
         
-        communityUser.badges.forEach(userBadge=>{
-          userBadge.visible = false;
-          if(modules.find(modEl => modEl.id === userBadge.badge.module && modEl.selected)){
-            userBadge.visible = true;
-          }
-        })
+  //       communityUser.badges.forEach(userBadge=>{
+  //         userBadge.visible = false;
+  //         if(modules.find(modEl => modEl.id === userBadge.badge.module && modEl.selected)){
+  //           userBadge.visible = true;
+  //         }
+  //       })
+  //     });
+  //     setCommunityUsers([...tmpCommunityUsers])
+  //   }
+  // },[modules])
+
+  useEffect(()=>{
+    if(modules){
+      let queryStr = ""
+      modules.forEach(module => {
+        if(module.selected){
+          queryStr += `modules[]=${module.id}&`
+        }
       });
-      setCommunityUsers([...tmpCommunityUsers])
+
+      axiosInstance.get("/api/v1/users/minified/?"+queryStr).then(response=>{
+        console.log(response.data)
+        setCommunityUsers(response.data)
+      })
     }
   },[modules])
 
+
   useEffect(()=>{
-    axiosInstance.get("/api/v1/users/minified/").then(response=>{
-      setCommunityUsers(response.data)
-    })
     axiosInstance.get("/api/v1/modules").then(response=>{
       response.data.forEach(data => {
         data.selected = data.active;
@@ -48,6 +62,7 @@ function Community() {
     if(foundModule){
       foundModule.selected = !foundModule.selected
     }
+    console.log(modulesTmp)
     setModules([...modulesTmp])
   }
 
@@ -125,7 +140,7 @@ function Community() {
                             <td>{user.username}</td>
                             <td className="user-badges">
                               <div className="small-badges">
-                                {user.badges.filter(progressBadge=>progressBadge.earned && progressBadge.visible===true).map((progressBadge,progressBadgeIndex)=>{
+                                {user.badges.filter(progressBadge=>progressBadge.earned).map((progressBadge,progressBadgeIndex)=>{
 
                                   return <BadgeSmall 
                                           key={progressBadgeIndex}

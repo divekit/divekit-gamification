@@ -11,6 +11,7 @@
     --selected-color: #B6D1FA;
     --button-color: #F4F5FF;
     --button-hover-color: #d5d6df;
+    --button-disabled-color: rgb(150, 150, 150);
     --border-color: #dedede;
     --link-color: #2D4CF0;
     --progress-color: rgb(0, 209, 0);
@@ -27,6 +28,7 @@
     --heading-color: white;
     --button-color: #424246;
     --button-hover-color: rgb(48, 45, 45);
+    --button-disabled-color:rgb(99, 99, 99);
     --border-color:#7b7b7b;
     --link-color: #778bf1;
     --selected-color: #555961;
@@ -61,6 +63,33 @@ body {
     transition: width 0.5s ease-in-out;
 }
 
+label{
+  width: 100%;
+  line-height: 2em;
+  color: var(--font-color);
+  .error{
+      color: var(--error-color);
+  }
+}
+input{
+  width: 100%;
+  border: 0;
+  outline: none;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--font-color);
+  background-color: var(--primary-color);
+  height: 2em;
+  transition: all 0.2s ease-in-out;
+}
+
+input:focus{
+  border-color: var(--font-color);
+}
+input.disabled{
+  cursor:not-allowed;
+  color: var(--border-color);
+  border: none;
+}
 
 .btn{
     background-color: var(--button-color);
@@ -79,6 +108,19 @@ body {
 
 .btn.btn-rounded{
     border-radius: 20px;
+}
+.btn.danger{
+  background-color: var(--error-color);
+}
+
+.btn.disabled{
+  cursor: default;
+  background-color: var(--button-disabled-color);
+  color: var(--text-disabled-color);
+  &:hover{
+    color: var(--text-disabled-color);
+    background-color: var(--button-disabled-color);
+  }
 }
 
 .link{
