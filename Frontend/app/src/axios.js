@@ -18,21 +18,17 @@ axiosInstance.interceptors.response.use(
     response =>  response,
     error => {
         const originalRequest = error.config;
-        console.log('error.response', error.response)
         if(error.response.status === 401){
             
             const refreshToken = localStorage.getItem("refresh");
             if(refreshToken && !originalRequest._retry){
                 originalRequest._retry = true
-                console.log("refreshing")
                 return new Promise((resolve,reject) => {
                     axiosInstance.post("/api/v1/token/refresh/",{refresh:refreshToken}).then((response)=>{
                         localStorage.setItem("access",response.data.access);
                         localStorage.setItem("refresh",response.data.refresh);
-    
-                        axiosInstance.defaults.headers["Authorization"] = "Bearer " + response.data.access;
-                        originalRequest.headers['Authorization'] = "Bearer " + response.data.access;
-                        // return axiosInstance.request(originalRequest)
+                        axiosInstance.defaults.headers = {...axios.defaults.headers, Authorization: `Bearer ${response.data.access}`}
+                        originalRequest.headers = {...originalRequest.headers, Authorization: `Bearer ${response.data.access}`}
                         resolve(axiosInstance(originalRequest))
                         
                     }).catch(err=>{
