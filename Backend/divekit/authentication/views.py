@@ -6,6 +6,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
+from django.http import HttpResponseRedirect
 from .permissions import IsStaffOrReadOnly,IsStaffOrSelf,IsStaff
 from .models import User
 from .serializers import ChangePasswordSerializer, MyTokenObtainPairSerializer, UserSerializer,UserSerializerMinified,UserCreateSerializer
@@ -25,7 +26,7 @@ class CustomTokenRefreshView(TokenRefreshView):
         response = super().post(request,*args,**kwargs)
         return response
 
-class ObtainTokenPairWithColorView(TokenObtainPairView):
+class ObtainTokenPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
     @extend_schema(
@@ -134,7 +135,8 @@ class UserActivationView(APIView):
         default_token_generator
         user.is_verified = True
         user.save()
-        return Response({"success":True,"message":"Email successfully confirmed"},status=status.HTTP_200_OK)
+        # return Response({"success":True,"message":"Email successfully confirmed"},status=status.HTTP_200_OK)
+        return HttpResponseRedirect(redirect_to='http://localhost:3000/login')
 
 class UserDetailView(APIView):
 

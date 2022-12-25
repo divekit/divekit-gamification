@@ -25,7 +25,7 @@ function App() {
     else{
       // console.log(user)
       // setTheme(user.theme)
-      console.log("USER UPDATED")
+      // console.log("USER",user)
     }
 
   },[user])
@@ -61,7 +61,7 @@ function App() {
         updateUserTheme("light")
     }
   }
-
+  // const toggleTheme = () => {}
 
   return (
 <>
