@@ -146,8 +146,8 @@ input.disabled{
     max-width: 80%;
     max-height: 80%;
     // margin: auto;
-    background-color: white;
-    
+    background-color: var(--bg-color);
+    color: var(--font-color);
   }
 }
 
