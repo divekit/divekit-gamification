@@ -7,6 +7,9 @@ from django.utils.html import format_html
 from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.urls import resolve
+from django.db.models.fields.files import FieldFile
+from django.db.models.fields.files import ImageFieldFile
 
 
 def update_filename(instance, filename,prefix=None):
@@ -49,7 +52,7 @@ class ModuleAdmin(admin.ModelAdmin):
 class Badge(models.Model):
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=1024)
-    img = models.ImageField(upload_to=update_filename)
+    img = models.ImageField(upload_to=update_filename, blank=True)
     milestones = models.IntegerField(default=1,null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     is_unique = models.BooleanField(default=True, null=False)
@@ -68,9 +71,10 @@ class Badge(models.Model):
 
 
 class BadgeAdmin(admin.ModelAdmin):
-    list_display = ['link_to_pk', "link_to_name", 'description']
+    list_display = ['link_to_pk', "link_to_name", 'description',"link_to_module"]
     search_fields = ['pk',"name__icontains","description__icontains"]
-    
+    save_as = True
+
     def link_to_pk(self, obj):
         link = reverse("admin:badges_badge_change", args=[obj.pk])
         return format_html('<a href="{}">{}</a>', link, obj.pk)
@@ -83,6 +87,29 @@ class BadgeAdmin(admin.ModelAdmin):
     link_to_name.admin_order_field = 'name'
     link_to_name.short_description = 'Name'  
 
+    def link_to_module(self, obj):
+        link = reverse("admin:badges_module_change", args=[obj.module.id])
+        return format_html('<a href="{}">{}</a>', link, obj.module.name)
+    link_to_module.admin_order_field = 'module'
+    link_to_module.short_description = 'Module'
+
+    def save_model(self, request, obj, form, change):
+    # Django always sends this when "Save as new is clicked"
+        if '_saveasnew' in request.POST:
+            # Get the ID from the admin URL
+            original_pk = request.resolver_match.kwargs['object_id']
+            print(original_pk)
+
+            # Get the original object
+            original_obj = obj._meta.concrete_model.objects.get(id=original_pk)
+
+            # Iterate through all it's properties
+            for prop, value in vars(original_obj).items():
+                # if the property is an Image (don't forget to import ImageFieldFile!)
+                if isinstance(getattr(original_obj, prop), ImageFieldFile):
+                    setattr(obj, prop, getattr(original_obj, prop))  # Copy it!
+        obj.save()
+
 @receiver(post_save,sender = Badge, dispatch_uid="update_user_progress")
 def update_user_progress(sender,**kwargs):
     updated_badge = kwargs["instance"]
@@ -92,9 +119,6 @@ def update_user_progress(sender,**kwargs):
             print(user_badge.progress)
             user_badge.progress = updated_badge.milestones
             user_badge.save()
-    # print(kwargs)
-    
-    # print(updated_badge)
 
 
 class UserBadge(models.Model):
@@ -161,6 +185,3 @@ class UserBadgeAdmin(admin.ModelAdmin):
         link = reverse("admin:badges_badge_change", args=[obj.badge.id])
         return format_html('<a href="{}">{}</a>', link, obj.badge.name)
     link_to_badge.short_description = 'Badge'
-
-
-    # list_display_links = ['owner', 'badge']
