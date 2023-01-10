@@ -12,6 +12,7 @@ import Settings from './pages/Settings/Settings';
 import Profile from './pages/Profile/Profile';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
+import Forget from './pages/Forget/Forget';
 
 function App() {
   const [user, setUser] = useState(localStorage.getItem("access") ? jwt(localStorage.getItem("access")) : null);
@@ -79,6 +80,7 @@ function App() {
           <Route path="/settings" element={<ProtectedRoute user={user}><Settings/></ProtectedRoute>} />
           <Route path="/admin" element={<ProtectedRoute user={user} isStaff={true}><Admin/></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute user={user}><Profile/></ProtectedRoute>} />
+          <Route path="/forget" element={<ProtectedRoute user={user} redirect="/"><Forget/></ProtectedRoute>}></Route>
           <Route path="/login" element={<ProtectedRoute user={user} redirect="/"><Login/></ProtectedRoute>}></Route>
           <Route path="/register" element={<ProtectedRoute user={user} redirect="/"><Register/></ProtectedRoute>}></Route>
         </Routes>

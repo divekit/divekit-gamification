@@ -156,6 +156,8 @@ class UserSerializerMinified(serializers.ModelSerializer):
         return UserBadgeSerializerMinified(user_badges,many=True).data
 
 
+class RefreshPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
 
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True)

@@ -9,7 +9,12 @@ from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
 from .permissions import IsStaffOrReadOnly,IsStaffOrSelf,IsStaff
 from .models import User
-from .serializers import ChangePasswordSerializer, MyTokenObtainPairSerializer, UserSerializer,UserSerializerMinified,UserCreateSerializer
+from .serializers import (ChangePasswordSerializer, 
+                            MyTokenObtainPairSerializer, 
+                            UserSerializer,
+                            UserSerializerMinified,
+                            UserCreateSerializer,
+                            RefreshPasswordSerializer)
 from rest_framework import serializers
 
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
@@ -212,3 +217,43 @@ class UserBadgeListView(APIView):
 
 
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class UserRefreshPasswordView(APIView):
+
+    permission_classes = (permissions.AllowAny,)
+
+    @extend_schema(
+        tags=["auth"],
+        # request=UserSerializer
+        request=RefreshPasswordSerializer
+    )
+    def put(self,request,*args,**kwargs):
+        # user = 
+        serializer = RefreshPasswordSerializer(request.data)
+        if serializer.is_valid:
+            print("VALID")
+            # print()
+            user = User.objects.filter(email=serializer.data["email"]).first()
+            # print(user)
+            if user:
+                password = User.objects.make_random_password()
+                # print(user)
+                user.set_password(password)
+                
+                user.save()
+                send_mail(  "DivekitBadge Passwort wurde geändert",
+                            f"Hier ist das neue Passwort: {password}",
+                            None,
+                            recipient_list=[user.email],
+                            fail_silently=True,
+                        )
+                
+            else:
+                print("USER NOT FOUND")
+                return Response({"detail":"Fehler aufgetreten!"},status=status.HTTP_400_BAD_REQUEST)
+
+
+        # print(user)
+        return Response(status=status.HTTP_200_OK)
