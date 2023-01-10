@@ -23,6 +23,9 @@
                 margin: 0;
             }
         }
+        .error-detail{
+            color: var(--error-color);
+        }
         .form-wrapper{
             padding: 20px 0 10px 0;
             form{

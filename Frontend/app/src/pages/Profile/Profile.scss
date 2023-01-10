@@ -68,23 +68,13 @@
             display: flex;
             flex-direction: row;
             align-items: center;
-            label{
-                // text-align: end;
-                // width: 150px
-                // max-width: 500px;
-                // width: 100%;
-                // display: inline;
-                //    word-break: break-all;
-            }
             input{
-                // max-width: 200px;
-                // width: 100%;
-                // display: inline;
-                // width: fit-content;
                 width: 100%;
             }
+            input:disabled{
+                border-bottom: 1px solid transparent;
+            }
             input[type="checkbox"]{
-                // width: max-content;
                 width: 2em;
             }
         }
