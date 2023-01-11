@@ -22,7 +22,7 @@ THEMES = [
 class User(AbstractUser):
     email                   = models.EmailField(blank=False)
     campus_id               = models.CharField(max_length=15)
-    discord_username        = models.CharField(max_length=255)
+    discord_username        = models.CharField(max_length=255, blank=True)
     img                     = models.ImageField(upload_to=update_filename,blank=True,default="users/default_orange.jpg")
     theme                   = models.IntegerField(choices=THEMES, default=1)
     is_verified             = models.BooleanField(default=False)

@@ -64,7 +64,7 @@ class UserListViewMinified(APIView):
     )
     def get(self,request,*args,**kwargs):
         
-        users = User.objects.all()
+        users = User.objects.filter(visible_in_community=True).all()
         serializer = UserSerializerMinified(users,many=True,context = {'request':request})
         return Response(serializer.data,status.HTTP_200_OK)
 
