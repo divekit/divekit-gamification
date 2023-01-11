@@ -29,7 +29,6 @@ function Home() {
       })
       axiosInstance.get("/api/v1/users/"+user.user_id+"/badges/").then(response=>{
         setMyBadges(response.data)
-        console.log(response.data)
       })
       axiosInstance.get("/api/v1/modules").then(response=>{
         response.data.forEach(data => {
@@ -204,7 +203,6 @@ function Home() {
             </Card>
             <Card collapsed={false} title={"Erhältlich"} count={availableBadges?availableBadges.length:"0"}>
             {availableBadges?
-              // console.log("")
               <div className='badges'>
 
                 {availableBadges.map((badge,index)=>{
@@ -224,7 +222,6 @@ function Home() {
             </Card>
             <Card collapsed={true} title={"Misc"} count={miscBadges?miscBadges.length:"0"}>
             {miscBadges?
-              // console.log("")
               <div className='badges'>
 
                 {miscBadges.map((badge,index)=>{

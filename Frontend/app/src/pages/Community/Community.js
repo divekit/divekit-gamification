@@ -13,23 +13,6 @@ function Community() {
   const [modules,setModules] = useState(null)
   const [moduleModalToggle,setModuleModalToggle] = useState(false)
 
-
-  // useEffect(()=>{
-  //   if(modules && communityUsers){
-  //     let tmpCommunityUsers = communityUsers
-  //     tmpCommunityUsers.forEach(communityUser => {
-        
-  //       communityUser.badges.forEach(userBadge=>{
-  //         userBadge.visible = false;
-  //         if(modules.find(modEl => modEl.id === userBadge.badge.module && modEl.selected)){
-  //           userBadge.visible = true;
-  //         }
-  //       })
-  //     });
-  //     setCommunityUsers([...tmpCommunityUsers])
-  //   }
-  // },[modules])
-
   useEffect(()=>{
     if(modules){
       let queryStr = ""
@@ -40,7 +23,6 @@ function Community() {
       });
 
       axiosInstance.get("/api/v1/users/minified/?"+queryStr).then(response=>{
-        console.log(response.data)
         setCommunityUsers(response.data)
       })
     }
@@ -62,7 +44,6 @@ function Community() {
     if(foundModule){
       foundModule.selected = !foundModule.selected
     }
-    console.log(modulesTmp)
     setModules([...modulesTmp])
   }
 
