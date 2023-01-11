@@ -129,6 +129,7 @@ function Community() {
                 <thead>
                   <tr>
                     <th>Benutzername</th>
+                    <th>Discord</th>
                     <th>Badges</th>
                   </tr>
 
@@ -138,6 +139,7 @@ function Community() {
                   {communityUsers.map((user,userIndex)=>{
                     return <tr key={userIndex}>
                             <td>{user.username}</td>
+                            <td>{user.discord_username}</td>
                             <td className="user-badges">
                               <div className="small-badges">
                                 {user.badges.filter(progressBadge=>progressBadge.earned).map((progressBadge,progressBadgeIndex)=>{
@@ -162,6 +164,7 @@ function Community() {
                 <tfoot>
                   <tr>
                     <th>Benutzername</th>
+                    <th>Discord</th>
                     <th>Badges</th>
                   </tr>
 

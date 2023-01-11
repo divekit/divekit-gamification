@@ -179,35 +179,33 @@ function Profile() {
 
           <Card collapsed={true} title="Einstellungen">
           {isEditing?<div className='settings'>
-            <div className='setting'>
-              <label>Mich von Discord benachrichtigen, wenn ich ein neues Badge erhalte</label>
-              <input type="checkbox" name="notify_badge" onChange={handleInput} checked={profile.notify_badge}/>
+          <div className='setting'>
+              <label>Mich auf der Community-Seite anzeigen</label>
+              <input type="checkbox" name="visible_in_community" onChange={handleInput} checked={profile.visible_in_community}/>
             </div>
             <div className='setting'>
               <label>Discord Username auf der Community-Seite anzeigen</label>
               <input type="checkbox" name="show_discord_username" onChange={handleInput} checked={profile.show_discord_username}/>
             </div>
             <div className='setting'>
-              <label>Mich auf der Community-Seite anzeigen</label>
-              <input type="checkbox" name="visible_in_community" onChange={handleInput} checked={profile.visible_in_community}/>
+              <label>Mich von Discord benachrichtigen, wenn ich ein neues Badge erhalte</label>
+              <input type="checkbox" name="notify_badge" onChange={handleInput} checked={profile.notify_badge}/>
             </div>
-
           </div>
           :
           <div className='settings'>
             <div className='setting'>
-              <label>Mich von Discord benachrichtigen, wenn ich ein neues Badge erhalte</label>
-              <input type="checkbox" name="notify_badge" disabled checked={profile.notify_badge}/>
+              <label>Mich auf der Community-Seite anzeigen</label>
+              <input type="checkbox" name="visible_in_community" disabled checked={profile.visible_in_community}/>
             </div>
             <div className='setting'>
               <label>Discord Username auf der Community-Seite anzeigen</label>
               <input type="checkbox" name="show_discord_username" disabled checked={profile.show_discord_username}/>
             </div>
             <div className='setting'>
-              <label>Mich auf der Community-Seite anzeigen</label>
-              <input type="checkbox" name="visible_in_community" disabled checked={profile.visible_in_community}/>
+              <label>Mich von Discord benachrichtigen, wenn ich ein neues Badge erhalte</label>
+              <input type="checkbox" name="notify_badge" disabled checked={profile.notify_badge}/>
             </div>
-
           </div>
           }
           </Card>
