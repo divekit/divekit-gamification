@@ -39,6 +39,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 # Application definition
 INSTALLED_APPS = [
+    "authentication",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,7 +50,6 @@ INSTALLED_APPS = [
     'drf_spectacular',
     "bot",
     "badges",
-    "authentication",
 ]
 
 MIDDLEWARE = [
@@ -95,11 +95,11 @@ EMAIL_USE_TLS = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'divekit',
+        'NAME': env("DATABASE_NAME"),
         'USER': env('DATABASE_USER'),
         'PASSWORD': env('DATABASE_PASSWORD'),
-        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
-        'PORT': '3306',
+        'HOST': env("DATABASE_HOST"),   # Or an IP Address that your DB is hosted on
+        'PORT': env("DATABASE_PORT"),
     }
 }
 
