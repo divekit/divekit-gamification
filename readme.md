@@ -1,5 +1,5 @@
 # Divekit Gamification
-A Site where students can see their progress.
+A web application where students can see their progress through badges and have an overview of others. Listing and sorting student badges with the selection of different modules.
 
 # Our Vision
 We want to have a system that is integrated with the divekit platform. Students can not only earn badges they can see their progress and see others. The badges have no point system in them so that every badge is basically equal to each other. A student can basically collect so many badges as long as the badge is not a unique one. We want the students to try and do their bests and we think a reward system like this is helpful for the student community. There will be automated badge assignments based on tasks like having all the tests passed in a milestone or completing all the milestones. The badges/quests that are hard to automate like rewarding a student who was being helpful to others and making the community better, will be done by moderators. We plan to have a discord bot to have a seamless integration with our discord server and our students.
@@ -24,8 +24,6 @@ We want to have a system that is integrated with the divekit platform. Students 
 - Connection with Discord
 - Image Compression
 - Permissions
-- Caching
-
 
 
 ### Discord Bot
