@@ -13,8 +13,11 @@ function Profile() {
   const imageButton = useRef()
   const [uploadedImg,setUploadedImg] = useState(null)
   const [profile,setProfile] = useState(null)
+  const [password,setPassword] = useState(null)
   const [isEditing,setIsEditing] = useState(false)
   // const [isChanged,setIsChanged] = useState(false)
+  const [responses,setResponses] = useState(null)
+
   const navigate = useNavigate();
 
   useEffect(()=>{
@@ -46,14 +49,17 @@ function Profile() {
     }
   }
 
-  const handlePasswort = (e)=>{
+  const handlePassword = (e)=>{
     // console.log(e.target.name)
+    console.log(e.target.name,e.target.value)
+    setPassword({...password,[e.target.name]:e.target.value})
   }
 
   const handleSaveProfile = (e)=>{
     console.log(profile)
     let tempProfile = Object.assign({}, profile);
     delete tempProfile.img
+    let tmpResponses = []
 
     if(uploadedImg){
       let data = new FormData();
@@ -68,13 +74,29 @@ function Profile() {
       })
     }
 
+    if(password){
+      axiosInstance.put("api/v1/users/password/",password).then(response=>{
+        console.log(response.data.message)
+        tmpResponses.push({"success":true,"message":response.data.message})
+      }).catch(err=>{
+        console.log(err.response.data.detail)
+        tmpResponses.push({"success":false,"message":err.response.data.detail})
+        
+      })
+    }
+
     axiosInstance.put("api/v1/users/"+profile.id+"/",tempProfile).then(response=>{
       console.log(response.data)
-      toggleIsEditing();
       setUser({...user})
-
+      tmpResponses.push({"success":true,"message":"Profil wurde aktualisiert"})
     })
+    setResponses(tmpResponses)
+    toggleIsEditing();
   }
+
+  useEffect(()=>{
+    console.log('responses', responses)
+  },[responses])
   
   const toggleIsEditing = ()=>{
     if(isEditing){
@@ -100,7 +122,12 @@ function Profile() {
     <div className='profilepage def-page'>
     <Sidebar></Sidebar>
     <div className='content'>
-        
+        {responses?<div className='responses'>
+          <ul>
+            {responses.map((response,index)=>{return <li key={index} className={response.success?"response success":"response fail"}>{response.message}</li>})}
+          </ul>
+          
+        </div>:<></>}
         {profile?
         <>
           <div className='content-title'>Hallo {profile.username.charAt(0).toUpperCase() + profile.username.slice(1)}</div>
@@ -132,12 +159,18 @@ function Profile() {
             </div>
             <div className='setting'>
               <label>Altes Passwort:</label>
-              <input type="password" name="old_password" onChange={handlePasswort} placeholder="**********"/>
+              <input type="password" name="old_password" onChange={handlePassword} placeholder="**********"/>
             </div>
             <div className='setting'>
               <label>Neues Passwort:</label>
-              <input type="password" name="new_password" onChange={handleInput} placeholder="**********"/>
+              <input type="password" name="new_password" onChange={handlePassword} placeholder="**********"/>
             </div>
+            {password?
+            <div className='setting'>
+            <label>Neues Passwort Bestätigung:</label>
+            <input type="password" name="new_password_confirm" onChange={handlePassword} placeholder="**********"/>
+          </div>
+            :<></>}
             
 
           </div>

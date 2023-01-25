@@ -152,7 +152,7 @@ class UserDetailView(APIView):
         tags=["auth"]
     )
     def get(self, request, *args, **kwargs):
-        print(request.user.id)
+        
         user = User.objects.get(id=kwargs["user_id"])
 
         if request.user.id == kwargs["user_id"]:
@@ -218,8 +218,28 @@ class UserBadgeListView(APIView):
 
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
+class UserChangePasswordView(APIView):
+    def put(self,request,*args,**kwargs):
+        print(request.user.id)
+        serializer = ChangePasswordSerializer(data=request.data)
 
-
+        if serializer.is_valid():
+            try:
+                user:User = request.user
+                print(user)
+                if not user.check_password(serializer.validated_data["old_password"]):
+                    return Response({"detail":"Das alte Passwort stimmt nicht!"},status=status.HTTP_400_BAD_REQUEST)
+                
+                password = serializer.validated_data["new_password"]
+                
+                # print(user)
+                user.set_password(password)
+                
+                user.save()
+                return Response({"message":"Passwort wurde geändert!"}, status.HTTP_200_OK)
+            except Exception as e:
+                pass
+        return Response({"detail":"Bei der Passwortänderung ein Fehler aufgetreten!"},status=status.HTTP_400_BAD_REQUEST)
 class UserRefreshPasswordView(APIView):
 
     permission_classes = (permissions.AllowAny,)

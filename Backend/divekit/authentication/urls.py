@@ -8,7 +8,8 @@ from .views import (ObtainTokenPairView,
                     UserBadgeListView,
                     UserActivationView,
                     CustomTokenRefreshView,
-                    UserRefreshPasswordView)
+                    UserRefreshPasswordView,
+                    UserChangePasswordView)
 
 
 urlpatterns = [
@@ -20,5 +21,6 @@ urlpatterns = [
     path("users/",UserListView.as_view(), name="users"),
     path("users/minified/",UserListViewMinified.as_view(),name="users_minified"),
     path("users/confirmation/",UserActivationView.as_view(),name="confirmation"),
-    path("users/refresh/",UserRefreshPasswordView.as_view(), name="refresh_password")
+    path("users/refresh/",UserRefreshPasswordView.as_view(), name="refresh_password"),
+    path("users/password/",UserChangePasswordView.as_view(),name="change_password")
 ]
