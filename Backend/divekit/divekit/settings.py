@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     "bot",
     "badges",
+    "dsl"
 ]
 
 MIDDLEWARE = [
@@ -92,13 +93,43 @@ EMAIL_USE_SSL = False
 EMAIL_USE_TLS = True
 
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    "formatters":{
+        "simple": {
+            "format": "{asctime}:{levelname}:{message}",
+            "style": "{",
+        },
+    },
+    'handlers': {
+        
+        'dkb_file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename':  os.path.join(BASE_DIR, "logs\\dsl.log"),
+            "formatter":"simple"
+        },
+
+    },
+    'loggers': {
+        
+        "dsl":{
+            "handlers":["dkb_file"],
+            "level":"DEBUG",
+            "propagate":True
+        }
+    },
+}
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', 
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': env("DATABASE_NAME"),
         'USER': env('DATABASE_USER'),
         'PASSWORD': env('DATABASE_PASSWORD'),
-        'HOST': env("DATABASE_HOST"),   # Or an IP Address that your DB is hosted on
+        # Or an IP Address that your DB is hosted on
+        'HOST': env("DATABASE_HOST"),
         'PORT': env("DATABASE_PORT"),
     }
 }
@@ -183,7 +214,7 @@ SPECTACULAR_SETTINGS = {
 
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=5),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=14),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,

@@ -1,0 +1,70 @@
+start: "begin" block "end"
+block: statement*
+
+statement: (dec | builtin_func_call | if_statement | ass )
+
+dec: "var" CNAME ("=" expr)? 
+
+builtin_func_call: CNAME"("(expr (","expr)*)?")"
+
+if_statement: "if" condition_block ("else if" condition_block)* ("else" stat_block)?
+condition_block: "("expr")" stat_block
+stat_block: "{" block "}"
+
+ass: ( call "." )? CNAME  "=" expr 
+
+expr: "(" expr ")" -> par
+| "-" expr -> min
+| "!" expr -> neg
+| array -> arr_ex
+| expr "+" expr -> addop
+| expr "-" expr -> minop
+| expr "*" expr -> mulop
+| expr "/" expr -> divop
+| true -> true_ex
+| false -> false_ex
+| nil -> nil_ex
+| expr "&&" expr -> and_ex
+| expr "||" expr -> or_ex
+| expr "==" expr -> equals
+| expr "!=" expr -> not_equals
+| expr "<" expr -> lt
+| expr "<=" expr -> lte
+| expr ">=" expr -> gte
+| expr ">" expr -> gt
+| call -> call_ex
+| builtin_func_call -> func_ex
+| atom -> atom_ex
+
+array: "[" expr ("," expr)*"]"
+
+
+call: CNAME ( "(" param+ ")")? ( call_at | call_fun |  call_ar )*
+call_ar : "[" expr "]"
+call_fun :  ("." CNAME ( "(" param* ")"))
+call_at : ("." CNAME)
+
+atom: NUMBER 
+| STRING 
+| CNAME 
+
+true: "true"
+false: "false"
+nil: "null"
+
+param: (CNAME "=" expr) [","]
+
+
+%import common.WORD
+%import common.CNAME
+%import common.ESCAPED_STRING   -> STRING
+%import common.SIGNED_NUMBER    -> NUMBER
+%import common.NEWLINE -> NEWLINE
+%import common.WS
+
+SPACE: " "
+COMMENT: "//" /[^\n]*/ NEWLINE
+
+%ignore COMMENT
+%ignore SPACE
+%ignore WS  

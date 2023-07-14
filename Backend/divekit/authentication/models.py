@@ -31,4 +31,6 @@ class User(AbstractUser):
     notify_badge            = models.BooleanField(default=False,blank=True)
 
 
+    def __repr__(self) -> str:
+        return "{}".format(self.campus_id)
 
