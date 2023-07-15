@@ -10,16 +10,13 @@ class BadgeRuleView(APIView):
     def post(self, request:Request, *args, **kwargs):
         dkb_object = DKBFile.objects.get(pk=kwargs.get("dkbfile_id"))
         
-        if(dkb_object.text):
-            # print(dkb_object.text)
-            lines = dkb_object.text
-        else:
-            try:
-                file = dkb_object.file
-                file.open(mode="r")
-                lines = file.read()
-            finally:
-                file.close()
+        
+        try:
+            file = dkb_object.file
+            file.open(mode="r")
+            lines = file.read()
+        finally:
+            file.close()
 
         try:
             dkb.run(lines,request.data)

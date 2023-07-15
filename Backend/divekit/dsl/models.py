@@ -16,7 +16,7 @@ def dkb_file_path(instance, filename, prefix=None):
 class DKBFile(models.Model):
     file = models.FileField(upload_to=dkb_file_path)
     title = models.CharField(max_length=255,null=True,blank=True)
-    text = models.TextField(null=True,blank=True)
+    # text = models.TextField(null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(
